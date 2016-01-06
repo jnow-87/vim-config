@@ -18,6 +18,12 @@
 		endif
 	endfunction
 
+	" function to clean log file form some escape sequences
+	function s:clean()
+		exec "0,$:s:\<c-[>[[5130]*m::g"
+		exec "0,$:s:\<c-M>::g"
+	endfunction
+
 	" vim common
 		runtime! debian.vim
 		syntax on
@@ -31,10 +37,7 @@
 		set spelllang=de,en
 		set spellfile=~/.vim/spell/vimspell.add
 		set tabpagemax=100
-		set foldmethod=marker
 		set dir=/tmp
-
-
 
 		" The following are commented out as they cause vim to behave a lot
 		" differently from regular Vi. They are highly recommended though.
@@ -63,17 +66,19 @@
 		highlight	DiffChange	ctermbg=33
 		highlight	DiffDelete	ctermbg=88
 		highlight	DiffText	ctermbg=1, ctermfg=15
+		highlight	MatchParen	ctermfg=7 ctermbg=88
 
 	" omnicomplete
-		"autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+		:"autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 		"autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-		autocmd BufWinEnter *.[ch],*.cc :silent exe "set tags+=/tmp/" . fnamemodify($PWD, ':t') . ".tags"
-		autocmd VimEnter *.[ch],*.cc :silent exe "!ctags -R --c++-kinds=+p --c-kinds=+p --fields=+iaS --extra=+fq --languages=c,c++ -f /tmp/" . fnamemodify($PWD, ':t') . ".tags ."
-		autocmd BufWritePost *.[ch],*.cc :silent exe "!ctags -R --c++-kinds=+p --c-kinds=+p --fields=+iaS --extra=+fq --languages=c,c++ --append=yes -f /tmp/" . fnamemodify($PWD, ':t') . ".tags " . fnamemodify(bufname("%"), ':h')
-		autocmd VimLeave *.[ch],*.cc :silent exe "!rm /tmp/" . fnamemodify($PWD, ':t') . ".tags"
+		autocmd BufWinEnter *.[chsS],*.cc :silent exe "set tags+=/tmp/" . fnamemodify($PWD, ':t') . ".tags"
+		autocmd VimEnter *.[chsS],*.cc :silent exe "!ctags -R --c++-kinds=+p --c-kinds=+p --fields=+iaS --extra=+fq --languages=c,c++ -f /tmp/" . fnamemodify($PWD, ':t') . ".tags ."
+		autocmd VimEnter * :call g:calcWidths()
+		autocmd BufWritePost *.[chsS],*.cc :silent exe "!ctags -R --c++-kinds=+p --c-kinds=+p --fields=+iaS --extra=+fq --languages=c,c++ --append=yes -f /tmp/" . fnamemodify($PWD, ':t') . ".tags " . fnamemodify(bufname("%"), ':h')
+		autocmd VimLeave *.[chsS],*.cc :silent exe "!rm /tmp/" . fnamemodify($PWD, ':t') . ".tags"
 		autocmd VimResized * :call g:calcWidths()
 
-		set completeopt+=longest
+		set completeopt=menuone,preview,longest
 
 		let OmniCpp_DisplayMode = 0
 		let OmniCpp_MayCompleteScope = 1
@@ -94,7 +99,7 @@
 		let Tlist_Use_Right_Window=1
 		let Tlist_Enable_Fold_Column=0
 		let Tlist_Display_Prototype=1
-		set updatetime=100
+		set updatetime=1000
 
 		set tag+=~/.vim/tags/stdc.tags		" generated with ctags on /usr/include
 		set tag+=~.vim/tags/kernel.tags		" generated with ctags on /usr/src/<kernel version>/include/linux
@@ -140,7 +145,6 @@
 """""""""""""
 " shortcuts "
 """""""""""""
-
 	function! ShiftVisual()
 		if getpos(".")[2] == 1
 			normal v
@@ -161,6 +165,10 @@
 		" add word under cursor to spellfile
 		nmap <silent> <F2>	zg
 		imap <silent> <F2>	<esc>zg<insert>
+		imap <silent!> <F3> <esc>:call <SID>clean()<cr><insert>
+		nmap <silent!> <F3> :call <SID>clean()<cr>
+		imap <silent!> <F3> <esc>:call <SID>clean()<cr>
+		map  <silent> <F4> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 		nmap <silent> <F5>	:Make<cr><cr>
 		imap <silent> <F5>	<esc>:let save=winnr()<cr> :Make<cr><cr> :exec save . "wincmd w"<cr><insert>
 		nmap <silent> <F6>	:exe "!ctags -R --c++-kinds=+p --c-kinds=+p --fields=+iaS --extra=+fq --languages=c,c++ -f /tmp/" . fnamemodify($PWD, ':t') . ".tags ."<cr><cr>:echo "updated tags: /tmp/vim.tags." . fnamemodify($PWD, ':t')<cr>
@@ -197,8 +205,8 @@
 	" redo undo
 		nmap <silent> <c-z> :undo<cr>
 		imap <silent> <c-z> <esc>:undo<cr><insert>
-		nmap <silent> <c-r> :redo<cr>
-		imap <silent> <c-r> <esc>:redo<cr><insert>
+		nmap <silent> <c-a-z> :redo<cr>
+		imap <silent> <c-a-z> <esc>:redo<cr><insert>
 
 	" copy/paste/mark
 		" copy
@@ -224,13 +232,6 @@
 		" move marked text
 			vmap <silent> <tab> >
 			vmap <silent> <s-tab> <
-
-	" folding
-	" FoldingMethode <manual, marker, syntax, indent, expr>
-		nmap <silent> <s-F> :foldopen<CR><insert>
-		nmap <silent> <c-F> :foldclose<CR>
-		vmap <silent> <c-F> :fold<CR>
-		imap <silent> <c-F> <ESC>:foldclose<CR>
 
 	" tabs
 		nmap <C-o> :tabnew 
