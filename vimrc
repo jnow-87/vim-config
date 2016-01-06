@@ -22,10 +22,16 @@ set ai
 set noexpandtab
 set tabstop=4
 set shiftwidth=4
+set complete=.,w,b,u,t,i,kspell
+set completeopt=menuone,longest
+set pumheight=10
+set conceallevel=3
+set concealcursor=vinc
 set spelllang=de,en
 set spellfile=~/.vim/spell/vimspell.add
 set tabpagemax=100
 set dir=/tmp
+set path=.,/usr/include,/usr/include/linux
 "}}}
 
 """"
@@ -33,14 +39,14 @@ set dir=/tmp
 """"
 "{{{
 " default filetype to text
-"autocmd BufEnter * if &filetype == "" | setfiletype text | endif
+autocmd	BufEnter * if &filetype == "" | setfiletype text | endif
 
 " enable color column
-autocmd FileType text setlocal colorcolumn=80
-autocmd FileType gitcommit setlocal colorcolumn=80
+autocmd	FileType text setlocal colorcolumn=80
+autocmd	FileType gitcommit setlocal colorcolumn=80 | setlocal tabstop=4
 
 " line wrap for vimdiff
-autocmd VimEnter * if &diff | execute 'windo set wrap' | endif
+autocmd	VimEnter * if &diff | execute 'windo set wrap' | endif
 
 " add filetype extensions
 autocmd	BufRead,BufNewFile *.lds setf ld
@@ -49,8 +55,8 @@ autocmd	BufRead,BufNewFile *.per setf per
 autocmd	BufRead,BufNewFile pconfig,Pconfig setf kconfig
 
 " window dimensions
-autocmd VimEnter	* :call <sid>win_dimensions()
-autocmd VimResized	* :call <sid>win_dimensions()
+autocmd	VimEnter	* :call <sid>win_dimensions()
+autocmd	VimResized	* :call <sid>win_dimensions()
 "}}}
 
 """"
@@ -77,20 +83,20 @@ autocmd BufWritePost	*.[chsS],*.cc			:silent call <sid>ctags(fnamemodify(bufname
 """""""""""""
 "{{{
 " set certain window dimensions, depending on vim size
-function! <sid>win_dimensions()
+function <sid>win_dimensions()
 	let g:Tlist_WinWidth = (&columns/5 <= 20) ? 20 : &columns/5
 	let g:scratchWinWidth = g:Tlist_WinWidth
 	let g:makeWinHeight = (&window/5) <= 7 ? 7 : &window/5
 endfunction
 
 " remove character from input
-function! <sid>eat_char(pat)
+function <sid>eat_char(pat)
 	let c = nr2char(getchar(0))
 	return (c =~ a:pat) ? '' : c
 endfunction
 
 " control shift key behaviour in visual mode
-function! <sid>v_key_shift()
+function <sid>v_key_shift()
 	if getpos(".")[2] == 1
 		normal v
 	else
@@ -101,7 +107,7 @@ function! <sid>v_key_shift()
 endfunction
 
 " echo syntax highlighting groups that apply to pattern under cursor
-function! <sid>syn_stack()
+function <sid>syn_stack()
 	if !exists("*synstack")
 		return
 	endif
@@ -110,7 +116,7 @@ function! <sid>syn_stack()
 endfunc
 
 " generate ctags for c, cpp, asm and java
-function! <sid>ctags(file)
+function <sid>ctags(file)
 	if &filetype == "c" || &filetype == "cpp" || &filetype == "asm"
 		let l:lang_args = "--languages=c,c++ --c++-kinds=+p --c-kinds=+p --fields=+iaS --extra=+fq"
 	elseif &filetype == "java"
@@ -125,6 +131,8 @@ endfunction
 " syntax highlighting "
 """""""""""""""""""""""
 "{{{
+colorscheme default
+
 highlight	mred			ctermfg=124
 highlight	mlblue			ctermfg=6
 highlight	mblue			ctermfg=27
@@ -147,6 +155,7 @@ highlight	MatchParen		ctermbg=88
 highlight	ColorColumn		ctermbg=235
 highlight	SignColumn		ctermbg=0
 highlight	ExtraWhitespace	ctermbg=236
+highlight	clang_arg		ctermbg=33
 
 " match extra whitespaces
 autocmd	FileType c,cpp,asm,text match ExtraWhitespace	"\( \+$\)\|\(^\zs \+\ze[^ ]\+\)\|\([^\t]\+\zs\t\+\ze$\)"
@@ -156,24 +165,33 @@ autocmd	FileType c,cpp,asm,text match ExtraWhitespace	"\( \+$\)\|\(^\zs \+\ze[^ 
 " plugin config "
 """""""""""""""""
 "{{{
-"""""
-"" omnicomplete
+""""
+"" clang_complete
 """"
 "{{{
-:"autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-"autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+"let g:clang_complete_loaded = 0
+let g:clang_library_path = "/usr/lib/llvm-3.7/lib"
+let g:clang_use_library = 1
 
-set completeopt=menuone,preview,longest
+let g:clang_jumpto_declaration_key = "<C-]>"
+let g:clang_jumpto_back_key = "<C-T>"
+let g:clang_jumpto_declaration_in_preview_key = "<C-W>"
 
-let OmniCpp_DisplayMode = 0
-let OmniCpp_MayCompleteScope = 1
-let OmniCpp_ShowScopeInAbbr = 1
-let OmniCpp_ShowPrototypeInAbbr = 0
-let OmniCpp_SelectFirstItem = 0
-let OmniCpp_NamespaceSearch = 2
-let OmniCpp_GlobalScopeSearch = 1
-let OmniCpp_MayCompleteDot = 1
-let OmniCpp_MayCompleteArrow = 1
+let g:clang_complete_auto = 1
+let g:clang_auto_select = 1
+let g:clang_complete_macros = 1
+let g:clang_complete_copen = 0
+let g:clang_sort_algo = "alpha"
+
+let g:clang_snippets = 1
+let g:clang_snippets_engine = 'clang_complete'
+let g:clang_conceal_snippets = 1
+"let g:clang_trailing_placeholder = 1
+"let g:clang_complete_optional_args_in_snippets = 0
+
+let g:clang_hl_errors = 0
+let g:clang_periodic_quickfix = 0
+"let g:clang_complete_auto
 "}}}
 
 """"
@@ -228,12 +246,12 @@ let g:airline_symbol_crypt = "\u221e"
 let g:airline_symbol_ro = "\ue0a2"
 let g:airline_symbol_rw = "\u2261"
 
-let g:airline_section_a = "%{airline#parts#mode()}"
+let g:airline_section_a = "%4{airline#parts#mode()}"
 let g:airline_section_b = "%{(&readonly || !&modifiable ? g:airline_symbol_ro : g:airline_symbol_rw)}%{(exists('+key') && !empty(&key) ? '  ' . g:airline_symbol_crypt : '')}"
 let g:airline_section_c = "%<%f%m"
 let g:airline_section_x = "%{&filetype}"
 let g:airline_section_y = "%{&fileformat}%{(&fileencoding != '' ? '  ' . g:airline_right_alt_sep . ' ' : '')}%{&fileencoding}"
-let g:airline_section_z = "%3p%%"
+let g:airline_section_z = "%7(%l,%c%)"
 let g:airline_section_warning = ""
 
 let g:airline_extensions = ['tabline']
@@ -246,6 +264,18 @@ let g:airline#extensions#tabline#show_tabs = 1
 let g:airline#extensions#tabline#show_tab_nr = 0
 let g:airline#extensions#tabline#tab_min_count = 2
 let g:airline#extensions#tabline#show_close_button = 0
+"}}}
+
+"""
+"" tagcomplete
+""""
+"{{{
+let g:tagcomplete_ignore_filetype = { 
+	\ "c" : 1,
+	\ "cpp" : 1,
+	\ "objc" : 1,
+	\ "objcpp" : 1,
+\ }
 "}}}
 
 """"
@@ -326,7 +356,7 @@ nnoremap t <c-]>
 " search
 nmap <silent> <cr> /<cr>
 nmap <silent> <backspace> ?<cr>
-nnoremap <silent> f :set hls<cr>:let @/=expand("<cword>")<cr>
+nnoremap <silent> hs :set hls<cr>:let @/=expand("<cword>")<cr>
 
 " redo undo
 nmap <silent> <c-z> :undo<cr>
@@ -372,42 +402,4 @@ imap <silent> <c-pageup> <esc>:wincmd W<cr><insert>
 
 " hex editor
 cabbrev hex %!xxd
-"}}}
-
-"""""""""""""""""
-" abbreviations "
-"""""""""""""""""
-"{{{
-""""
-"" C/C++
-""""
-"{{{
-autocmd FileType c,cpp ab #i #include 
-autocmd FileType c,cpp ab inlcude include
-autocmd FileType c,cpp ab MPI_CW MPI_COMM_WORLD
-"}}}
-
-""""
-"" laTex
-""""
-"{{{
-autocmd FileType tex ab beign begin
-autocmd FileType tex ab itmeize itemize
-autocmd FileType tex ab ðescription description
-autocmd FileType tex ab desc desription
-autocmd FileType tex ab ð d
-autocmd FileType tex ab ¢ c
-"ab ¢enter center
-
-autocmd FileType tex ab \begin{align*} \begin{align*}<cr><tab><cr><backspace>\end{align*}<up><end><c-r>=<sid>eat_char('\s')<insert>
-autocmd FileType tex ab \begin{itemize} \begin{itemize}<cr><tab>\item <cr><backspace>\end{itemize}<up><end><c-r>=<sid>eat_char('\s')<insert>
-autocmd FileType tex ab \begin{item} \begin{itemize}<cr><tab>\item <cr><backspace>\end{itemize}<up><end><c-r>=<sid>eat_char('\s')<insert>
-autocmd FileType tex ab \begin{description} \begin{description}<cr>\item <cr>\end{description}<up><end><c-r>=<sid>eat_char('\s')<insert>
-autocmd FileType tex ab \begin{enumerate} \begin{enumerate}<cr><tab>\item <cr><backspace>\end{enumerate}<up><end><c-r>=<sid>eat_char('\s')<insert>
-autocmd FileType tex ab \begin{tabular} \begin{table}[]<cr><tab>\centering<cr><cr>\begin{tabular}{}<cr>\end{tabular}<cr><left>\end{table}<up><up><end><c-r>=<sid>eat_char('\s')<insert>
-autocmd FileType tex ab \begin{minipage} \begin{minipage}{cm}<cr>\end{minipage}<up><end><left><left><c-r>=<sid>eat_char('\s')<insert>
-autocmd FileType tex ab \begin{figure} \begin{figure}[]<cr><tab>\centering<cr>\includegraphics[scale=.5]{}<cr>\caption{}<cr><backspace>\end{figure}<up><up><up><end><c-r>=<sid>eat_char('\s')<esc><insert>
-autocmd FileType tex ab \begin{tabfigure} \begin{figure}[]<cr>\begin{tabular}{cc}<cr><tab>\begin{minipage}{.5\textwidth}<cr><tab>\includegraphics[scale=.5]{}<cr><backspace>\end{minipage}&<cr>\begin{minipage}{.5\textwidth}<cr><tab>\includegraphics[scale=.5]{}<cr><backspace>\end{minipage}<cr><backspace>\end{tabular}<cr><tab>\caption{}<cr><backspace>\end{figure}<up><up><up><up><up><up><up><end><c-r>=<sid>eat_char('\s')<insert>
-autocmd FileType tex ab \begin{columns} \begin{columns}<cr><tab>\begin{column}{5cm}<cr>\end{column}<cr><cr>\begin{column}{5cm}<cr>\end{column}<cr><backspace>\end{columns}<up><up><up><up><up><up><end><c-r>=<sid>eat_char('\s')<insert>
-"}}}
 "}}}
