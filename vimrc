@@ -9,12 +9,13 @@
 runtime! debian.vim
 filetype plugin on
 syntax on
+set nocp
+set viminfo+=n/tmp/viminfo
 set showcmd
 set ignorecase
 set smartcase
 set incsearch
 "set mouse=a
-set nocp
 set number
 set numberwidth=2
 set norelativenumber
