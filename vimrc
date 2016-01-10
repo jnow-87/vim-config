@@ -33,6 +33,7 @@ set spellfile=~/.vim/spell/vimspell.add
 set tabpagemax=100
 set dir=/tmp
 set path=.,/usr/include,/usr/include/linux
+set updatetime=1000
 "}}}
 
 """"
@@ -65,17 +66,11 @@ autocmd	VimResized	* :call <sid>win_dimensions()
 """"
 "{{{
 set tag+=~/.vim/tags/stdc.tags		" generated with ctags on /usr/include
-set tag+=~.vim/tags/kernel.tags		" generated with ctags on /usr/src/<kernel version>/include/linux
 
-autocmd BufWinEnter		*.[chsS],*.cc			:silent exe "set tags+=/tmp/" . fnamemodify($PWD, ':t') . ".tags"
-autocmd VimLeave		*.[chsS],*.cc,*.java	:silent exe "!rm /tmp/" . fnamemodify($PWD, ':t') . ".tags"
-
-autocmd VimEnter		*.[chsS],*.cc			:silent call <sid>ctags("")
-autocmd VimEnter		*.[chsS],*.cc			:silent call <sid>ctags("")
-autocmd BufWritePost	*.[chsS],*.cc			:silent call <sid>ctags(fnamemodify(bufname("%"), ':.'))
-"autocmd BufWinEnter	*.java					:silent exe "set tags+=/tmp/" . fnamemodify($PWD, ':t') . ".tags"
-"autocmd VimEnter		*.java					:silent call <sid>ctags("")
-"autocmd BufWritePost	*.java					:silent call <sid>ctags(fnamemodify(bufname("%"), ':.'))
+autocmd BufWinEnter		*.java		:silent exe "set tags+=/tmp/" . fnamemodify($PWD, ':t') . ".tags"
+autocmd VimLeave		*.java		:silent exe "!rm /tmp/" . fnamemodify($PWD, ':t') . ".tags"
+autocmd VimEnter		*.java		:silent call <sid>ctags("")
+autocmd BufWritePost	*.java		:silent call <sid>ctags(fnamemodify(bufname("%"), ':.'))
 "}}}
 "}}}
 
@@ -155,6 +150,7 @@ highlight	DiffText		ctermbg=1, ctermfg=15
 highlight	MatchParen		ctermbg=88
 highlight	ColorColumn		ctermbg=235
 highlight	SignColumn		ctermbg=0
+highlight	Folded			ctermfg=242 ctermbg=234
 highlight	ExtraWhitespace	ctermbg=236
 highlight	clang_arg		ctermbg=33
 
@@ -207,16 +203,11 @@ let Tlist_Sort_Type='name'
 let Tlist_Use_Right_Window=1
 let Tlist_Enable_Fold_Column=0
 let Tlist_Display_Prototype=0
-set updatetime=1000
 
 hi def link MyTagListTagScope mblue
 hi def link MyTagListTitle mblue
 hi def link MyTagListComment mblue
 
-"nmap <silent> <F1> :TlistShowPrototype<cr>
-"imap <silent> <F1> <esc>:TlistShowPrototype<cr>
-nmap <silent> <F6>	:call <sid>ctags("")<cr>
-imap <silent> <F6>	<esc>:call <sid>ctags("")<cr>
 nmap <silent> <F9> :TlistToggle<cr>
 imap <silent> <F9> <esc>:TlistToggle<cr><insert>
 "}}}
@@ -291,10 +282,15 @@ let lex_uses_cpp = 1
 "" make
 """"
 "{{{
-nmap <silent> <F5>	:Make<cr><cr>
-imap <silent> <F5>	<esc>:let save=winnr()<cr> :Make<cr><cr> :exec save . "wincmd w"<cr><insert>
-nmap <silent> <F7> :MakeToggle<cr>
-imap <silent> <F7> <esc>:MakeToggle<cr>
+let g:make_win_title = "make"
+let g:make_win_height = 7
+
+nmap <silent> <F5>		:Make<cr><cr>
+imap <silent> <F5>		<esc>:let save=winnr()<cr> :Make<cr><cr> :exec save . "wincmd w"<cr><insert>
+nmap <silent> <s-F5>	:MakeToggle<cr>
+imap <silent> <s-F5>	<esc>:MakeToggle<cr>
+
+highlight def link make_header mblue
 "}}}
 
 """"
