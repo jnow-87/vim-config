@@ -202,7 +202,7 @@ let Tlist_Auto_Highlight_Tag=1
 let Tlist_Sort_Type='name'
 let Tlist_Use_Right_Window=1
 let Tlist_Enable_Fold_Column=0
-let Tlist_Display_Prototype=0
+let Tlist_Display_Prototype=1
 
 hi def link MyTagListTagScope mblue
 hi def link MyTagListTitle mblue
@@ -285,8 +285,8 @@ let lex_uses_cpp = 1
 let g:make_win_title = "make"
 let g:make_win_height = 7
 
-nmap <silent> <F5>		:Make<cr><cr>
-imap <silent> <F5>		<esc>:let save=winnr()<cr> :Make<cr><cr> :exec save . "wincmd w"<cr><insert>
+nmap <silent> <F5>		:Make<cr>
+imap <silent> <F5>		<esc>:let save=winnr()<cr> :Make<cr> :exec save . "wincmd w"<cr><insert>
 nmap <silent> <s-F5>	:MakeToggle<cr>
 imap <silent> <s-F5>	<esc>:MakeToggle<cr>
 
@@ -340,6 +340,10 @@ imap <silent> <F10> <esc>:set hls!<cr><insert>
 
 " syntax highlighting debug
 nmap <F3> :call <sid>syn_stack()<cr>
+
+" toggle 'paste'
+nmap <silent> <f4> :set paste!<cr>
+imap <silent> <f4> <esc>:set paste!<cr><insert>
 
 " movement
 nnoremap <silent> $ :$<cr>
