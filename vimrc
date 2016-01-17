@@ -40,9 +40,6 @@ set updatetime=1000
 "" autocmds
 """"
 "{{{
-" default filetype to text
-autocmd	BufRead * if &filetype == "" | setfiletype text | endif
-
 " enable color column
 autocmd	FileType text setlocal colorcolumn=80
 autocmd	FileType gitcommit setlocal colorcolumn=80 | setlocal tabstop=4
@@ -55,6 +52,9 @@ autocmd	BufRead,BufNewFile *.lds setf ld
 autocmd	BufRead,BufNewFile *.gperf setf gperf
 autocmd	BufRead,BufNewFile *.per setf per
 autocmd	BufRead,BufNewFile pconfig,Pconfig setf kconfig
+
+" default filetype to text
+autocmd	BufRead * if &filetype == "" | setfiletype text | endif
 
 " window dimensions
 autocmd	VimEnter	* :call <sid>win_dimensions()
