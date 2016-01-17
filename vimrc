@@ -357,7 +357,7 @@ nnoremap t <c-]>
 " search
 nmap <silent> <cr> /<cr>
 nmap <silent> <backspace> ?<cr>
-nnoremap <silent> hs :set hls<cr>:let @/=expand("<cword>")<cr>
+nnoremap <silent> s :set hls<cr>:let @/=expand("<cword>")<cr>
 
 " redo undo
 nmap <silent> <c-z> :undo<cr>
