@@ -41,7 +41,7 @@ set updatetime=1000
 """"
 "{{{
 " default filetype to text
-autocmd	BufEnter * if &filetype == "" | setfiletype text | endif
+autocmd	BufRead * if &filetype == "" | setfiletype text | endif
 
 " enable color column
 autocmd	FileType text setlocal colorcolumn=80
