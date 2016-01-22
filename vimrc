@@ -23,7 +23,8 @@ set ai
 set noexpandtab
 set tabstop=4
 set shiftwidth=4
-set complete=.,w,b,u,t,i,kspell
+set complete=.,w,b,u,t,i
+"set complete+=kspell
 set completeopt=menuone,longest
 set pumheight=10
 set conceallevel=3
@@ -346,10 +347,8 @@ nmap <silent> <f4> :set paste!<cr>
 imap <silent> <f4> <esc>:set paste!<cr><insert>
 
 " movement
-nnoremap <silent> $ :$<cr>
-vnoremap <silent> $ G
-nnoremap <silent> = :0<cr>
-vnoremap <silent> = gg
+nnoremap ´ $
+vnoremap ´ $
 nnoremap <c-a> ggvG$
 inoremap <c-a> <esc>ggvG$
 nnoremap t <c-]>
