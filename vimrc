@@ -347,11 +347,15 @@ nmap <silent> <f4> :set paste!<cr>
 imap <silent> <f4> <esc>:set paste!<cr><insert>
 
 " movement
-nnoremap ´ $
-vnoremap ´ $
-nnoremap <c-a> ggvG$
-inoremap <c-a> <esc>ggvG$
-nnoremap t <c-]>
+nnoremap <silent> ´ $
+nnoremap <silent> ` :$<cr>
+nnoremap <silent> ° :0<cr>
+vnoremap <silent> ´ $
+vnoremap <silent> ` G
+vnoremap <silent> ° gg
+nnoremap <silent> <c-a> ggvG$
+inoremap <silent> <c-a> <esc>ggvG$
+nnoremap <silent> t <c-]>
 
 " search
 nmap <silent> <cr> /<cr>
