@@ -80,31 +80,26 @@ autocmd BufWritePost	*.java		:silent call <sid>ctags(fnamemodify(bufname("%"), '
 """""""""""""
 "{{{
 " set certain window dimensions, depending on vim size
-function <sid>win_dimensions()
+function s:win_dimensions()
 	let g:Tlist_WinWidth = (&columns/5 <= 20) ? 20 : &columns/5
 	let g:scratchWinWidth = g:Tlist_WinWidth
 	let g:makeWinHeight = (&window/5) <= 7 ? 7 : &window/5
 endfunction
 
 " remove character from input
-function <sid>eat_char(pat)
+function s:eat_char(pat)
 	let c = nr2char(getchar(0))
 	return (c =~ a:pat) ? '' : c
 endfunction
 
-" control shift key behaviour in visual mode
-function <sid>v_key_shift()
-	if getpos(".")[2] == 1
-		normal v
-	else
-		let pos = getpos(".")
-		call setpos(".", [pos[0], pos[1], pos[2]+1, pos[3]])
-		normal v
-	endif
+" insert normal and insert mode mappings
+function s:ni_silent_map(lhs, rhs)
+	exec 'nnoremap <silent> ' . a:lhs . ' ' . a:rhs
+	exec 'inoremap <silent> ' . a:lhs . ' <esc><right>' . a:rhs . '<insert>'
 endfunction
 
 " echo syntax highlighting groups that apply to pattern under cursor
-function <sid>syn_stack()
+function s:syn_stack()
 	if !exists("*synstack")
 		return
 	endif
@@ -113,7 +108,7 @@ function <sid>syn_stack()
 endfunc
 
 " generate ctags for c, cpp, asm and java
-function <sid>ctags(file)
+function s:ctags(file)
 	if &filetype == "c" || &filetype == "cpp" || &filetype == "asm"
 		let l:lang_args = "--languages=c,c++ --c++-kinds=+p --c-kinds=+p --fields=+iaS --extra=+fq"
 	elseif &filetype == "java"
@@ -209,8 +204,7 @@ hi def link MyTagListTagScope mblue
 hi def link MyTagListTitle mblue
 hi def link MyTagListComment mblue
 
-nmap <silent> <F9> :TlistToggle<cr>
-imap <silent> <F9> <esc>:TlistToggle<cr><insert>
+call s:ni_silent_map('<f6>', ':TlistToggle<cr>')
 "}}}
 
 """"
@@ -286,10 +280,8 @@ let lex_uses_cpp = 1
 let g:make_win_title = "make"
 let g:make_win_height = 7
 
-nmap <silent> <F5>		:Make<cr>
-imap <silent> <F5>		<esc>:let save=winnr()<cr> :Make<cr> :exec save . "wincmd w"<cr><insert>
-nmap <silent> <s-F5>	:MakeToggle<cr>
-imap <silent> <s-F5>	<esc>:MakeToggle<cr>
+call s:ni_silent_map('<f5>', ':Make<cr>')
+call s:ni_silent_map('<s-f5>', ':MakeToggle<cr>')
 
 highlight def link make_header mblue
 "}}}
@@ -298,8 +290,7 @@ highlight def link make_header mblue
 "" scratch
 """"
 "{{{
-nmap <silent> <F8> :ScratchToggle<cr>
-imap <silent> <F8> <esc>:ScratchToggle<cr><insert>
+call s:ni_silent_map('<f7>', ':ScratchToggle<cr>')
 "}}}
 
 """"
@@ -318,33 +309,42 @@ let vimgdb_inferior_show = 0
 " mappings "
 """"""""""""
 "{{{
-" line numbers
-nmap <silent> <F11> <ESC>:set nu!<CR>
-imap <silent> <F11> <ESC>:set nu!<CR><insert>
-
-" spell checking and highlighting
-" find next miss-spelled word
-nmap <silent> <F1>	]s
-imap <silent> <F1>	<esc><right>]s<insert>
-
-" add word under cursor to spellfile
-nmap <silent> <F2>	zg
-imap <silent> <F2>	<esc>zg<insert>
+""""
+"" spell checking and highlighting
+""""
 
 " toggle spell checking
-nmap <silent> <F12> <ESC>:set spell!<CR>
-imap <silent> <F12> <ESC>:set spell!<CR><insert><right>
+call s:ni_silent_map('<f12>', ':set spell!<cr>')
 
-" enable search highlighting
-nmap <silent> <F10> <esc>:set hls!<cr>
-imap <silent> <F10> <esc>:set hls!<cr><insert>
+" find next miss-spelled word
+call s:ni_silent_map('<f1>', ']s')
+
+" add word under cursor to spellfile
+call s:ni_silent_map('<f2>', 'zg')
+
+""""
+"" vim settings
+""""
 
 " syntax highlighting debug
-nmap <F3> :call <sid>syn_stack()<cr>
+call s:ni_silent_map('<f3>', ':call <sid>syn_stack()<cr>')
 
 " toggle 'paste'
-nmap <silent> <f4> :set paste!<cr>
-imap <silent> <f4> <esc>:set paste!<cr><insert>
+call s:ni_silent_map('<f4>', ':set paste!<cr>')
+
+" toggle 'list' mode
+call s:ni_silent_map('<f9>', ':set list!<cr>')
+
+" toggle search highlighting
+call s:ni_silent_map('<f10>', ':set hls!<cr>')
+
+" toggle line numbers
+call s:ni_silent_map('<f11>', ':set nu!<cr>')
+
+
+""""
+"" buffer operations
+""""
 
 " movement
 nnoremap <silent> ´ $
@@ -358,51 +358,70 @@ inoremap <silent> <c-a> <esc>ggvG$
 nnoremap <silent> t <c-]>
 
 " search
-nmap <silent> <cr> /<cr>
-nmap <silent> <backspace> ?<cr>
+nnoremap <silent> <cr> /<cr>
+nnoremap <silent> <backspace> ?<cr>
 nnoremap <silent> s :set hls<cr>:let @/=expand("<cword>")<cr>
 
-" redo undo
-nmap <silent> <c-z> :undo<cr>
-imap <silent> <c-z> <esc>:undo<cr><insert>
-nmap <silent> <c-a-z> :redo<cr>
-imap <silent> <c-a-z> <esc>:redo<cr><insert>
+" undo/redo
+call s:ni_silent_map('<c-z>', ':undo<cr>')
+call s:ni_silent_map('<c-a-z>', ':redo<cr>')
 
-" shift-mark
-nmap <silent> <s-left> v
-imap <silent> <s-left> <ESC>:call <sid>v_key_shift()<cr>
-vmap <silent> <s-left> b
-nmap <silent> <s-right> v
-imap <silent> <s-right> <ESC>:call <sid>v_key_shift()<cr>
+" text selection
+nnoremap <silent> <s-left> v
+inoremap <silent> <expr> <s-left> getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v"
+vnoremap <silent> <s-left> b
+nnoremap <silent> <s-right> v
+inoremap <silent> <expr> <s-right> getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v"
 vnoremap <silent> <s-right> w
-nmap <silent> <s-up> v<up>
-imap <silent> <s-up> <esc>:call <sid>v_key_shift()<cr><up>
-vmap <silent> <s-up> <up>
-nmap <silent> <s-down> v<down>
-imap <silent> <s-down> <esc>:call <sid>v_key_shift()<cr><down>
-vmap <silent> <s-down> <down>
-
-" move marked text
-vnoremap <silent> <tab> <c-v>I<tab><esc>
-vnoremap <silent> <s-tab> <
+nnoremap <silent> <s-up> v<up>
+inoremap <silent> <expr> <s-up> getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v\<up>"
+vnoremap <silent> <s-up> <up>
+nnoremap <silent> <s-down> v<down>
+inoremap <silent> <expr> <s-down> getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v\<down>"
+vnoremap <silent> <s-down> <down>
 
 " visual mode multi-line insert/append
 vnoremap i I
 vnoremap a A
 
-" tabs
-nmap <C-o> :tabnew 
-imap <C-o> <esc>:tabnew 
-nmap <silent> <C-C> <ESC>:q<CR>
+" indentation
+vnoremap <silent> <tab> >
+vnoremap <silent> <s-tab> <
 
-nmap <silent> <C-Home> :tabprev<cr>
-imap <silent> <C-Home> <esc>:tabprev<cr><insert>
-nmap <silent> <C-End> :tabnext<cr>
-imap <silent> <C-End> <esc>:tabnext<cr><insert>
-nmap <silent> <c-pagedown> :wincmd w<cr>
-imap <silent> <c-pagedown> <esc>:wincmd w<cr><insert>
-nmap <silent> <c-pageup> :wincmd W<cr>
-imap <silent> <c-pageup> <esc>:wincmd W<cr><insert>
+""""
+"" windows control
+"""""
+
+" movement
+call s:ni_silent_map('<c-pagedown>', ':wincmd w<cr>')
+call s:ni_silent_map('<c-j>', ':wincmd w<cr>')
+call s:ni_silent_map('<c-pageup>', ':wincmd W<cr>')
+call s:ni_silent_map('<c-k>', ':wincmd W<cr>')
+
+" resize
+call s:ni_silent_map('<c-a-left>', '<c-w><')
+call s:ni_silent_map('<c-a-h>', '<c-w><')
+call s:ni_silent_map('<c-a-right>', '<c-w>>')
+call s:ni_silent_map('<c-a-l>', '<c-w>>')
+call s:ni_silent_map('<c-a-up>', '<c-w>-')
+call s:ni_silent_map('<c-a-j>', '<c-w>-')
+call s:ni_silent_map('<c-a-down>', '<c-w>+')
+call s:ni_silent_map('<c-a-k>', '<c-w>+')
+
+""""
+"" tab control
+""""
+
+" open/close
+nmap <c-o> :tabnew 
+imap <c-o> <esc>:tabnew 
+nmap <silent> <c-c> <esc>:q<cr>
+
+" movement
+call s:ni_silent_map('<c-home>', ':tabprev<cr>')
+call s:ni_silent_map('<c-h>', ':tabprev<cr>')
+call s:ni_silent_map('<c-end>', ':tabnext<cr>')
+call s:ni_silent_map('<c-l>', ':tabnext<cr>')
 
 " hex editor
 cabbrev hex %!xxd
