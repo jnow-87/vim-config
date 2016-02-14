@@ -98,6 +98,11 @@ function s:ni_silent_map(lhs, rhs)
 	exec 'inoremap <silent> ' . a:lhs . ' <esc><right>' . a:rhs . '<insert>'
 endfunction
 
+" brief	add command alias for 'exe'-mode commands
+function s:cabbrev(abbrev, expansion)
+	exec 'cabbr ' . a:abbrev . ' <c-r>=getcmdpos() == 1 && getcmdtype() == ":" ? "' . a:expansion . '" : "' . a:abbrev . '"<CR>'
+endfunction
+
 " echo syntax highlighting groups that apply to pattern under cursor
 function s:syn_stack()
 	if !exists("*synstack")
@@ -422,7 +427,16 @@ call s:ni_silent_map('<c-home>', ':tabprev<cr>')
 call s:ni_silent_map('<c-h>', ':tabprev<cr>')
 call s:ni_silent_map('<c-end>', ':tabnext<cr>')
 call s:ni_silent_map('<c-l>', ':tabnext<cr>')
+"}}}
+
+"""""""""""""""""
+" abbreviations "
+"""""""""""""""""
+"{{{
+" typos
+call s:cabbrev('W', 'w')
+call s:cabbrev('Q', 'q')
 
 " hex editor
-cabbrev hex %!xxd
+call s:cabbrev('hex', '%!xxd')
 "}}}
