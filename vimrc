@@ -1,3 +1,10 @@
+if exists("g:loaded_vimrc")
+    finish
+endif
+
+let g:loaded_vimrc = 1
+
+
 """""""""""""""
 " vim general "
 """""""""""""""
@@ -86,16 +93,10 @@ function s:win_dimensions()
 	let g:makeWinHeight = (&window/5) <= 7 ? 7 : &window/5
 endfunction
 
-" remove character from input
-function s:eat_char(pat)
-	let c = nr2char(getchar(0))
-	return (c =~ a:pat) ? '' : c
-endfunction
-
 " insert normal and insert mode mappings
 function s:ni_silent_map(lhs, rhs)
 	exec 'nnoremap <silent> ' . a:lhs . ' ' . a:rhs
-	exec 'inoremap <silent> ' . a:lhs . ' <esc><right>' . a:rhs . '<insert>'
+	exec 'inoremap <silent> ' . a:lhs . ' <right><esc>' . a:rhs . '<insert>'
 endfunction
 
 " brief	add command alias for 'exe'-mode commands
@@ -135,8 +136,9 @@ highlight	mlblue			ctermfg=6
 highlight	mblue			ctermfg=27
 highlight	mgreen			ctermfg=28
 highlight	morange			ctermfg=202
+highlight	mpurple			ctermfg=56
 highlight	Comment			ctermfg=27
-highlight	LineNr			term=bold cterm=none ctermfg=darkred ctermbg=none gui=none guifg=Darkred guibg=none
+highlight	LineNr			ctermfg=88
 highlight	Search			ctermfg=0 ctermbg=1
 highlight	Pmenu			ctermfg=0 ctermbg=1
 highlight	PmenuSel		ctermfg=0 ctermbg=3
@@ -156,7 +158,7 @@ highlight	ExtraWhitespace	ctermbg=236
 highlight	clang_arg		ctermbg=33
 
 " match extra whitespaces
-autocmd	FileType c,cpp,asm,text match ExtraWhitespace	"\( \+$\)\|\(^\zs \+\ze[^ ]\+\)\|\([^\t]\+\zs\t\+\ze$\)"
+autocmd	FileType c,cpp,asm,text match ExtraWhitespace	"\( \+$\)\|\(^\zs \+\ze[^ \*]\+\)\|\([^\t]\+\zs\t\+\ze$\)"
 "}}}
 
 """""""""""""""""
@@ -384,10 +386,6 @@ vnoremap <silent> <s-up> <up>
 nnoremap <silent> <s-down> v<down>
 inoremap <silent> <expr> <s-down> getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v\<down>"
 vnoremap <silent> <s-down> <down>
-
-" visual mode multi-line insert/append
-vnoremap i I
-vnoremap a A
 
 " indentation
 vnoremap <silent> <tab> >
