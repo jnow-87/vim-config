@@ -22,7 +22,7 @@ let b:current_syntax = "cpp"
 " C++ extentions
 syn keyword	cppKeyword	new delete this friend using public protected private virtual explicit export throw try catch operator typeid mutable class typename template namespace "[<>]?"
 syn keyword	cppKeyword	 "\<\(const\|static\|dynamic\|reinterpret\)_cast\s*<"me=e-1" "\<\(const\|static\|dynamic\|reinterpret\)_cast\s*$"
-syn region	cCppString	start=+L\="+ skip=+\\\\\|\\"\|\\$+ excludenl end=+"+ end='$' contains=@Spell
+syn region	cCppString	start=+L\="+ skip=+\\\\\|\\"\|\\$+ excludenl end=+'+ end='$' contains=@Spell
 
 " colors
 hi def link 	cppKeyword 	mblue
