@@ -367,7 +367,7 @@ nnoremap <silent> t <c-]>
 " search
 nnoremap <silent> <cr> /<cr>
 nnoremap <silent> <backspace> ?<cr>
-nnoremap <silent> s :set hls<cr>:let @/=expand("<cword>")<cr>
+nnoremap <silent> s :set hls<cr>/\<<c-r>=expand("<cword>")<cr>\><cr>
 
 " undo/redo
 call s:ni_silent_map('<c-z>', ':undo<cr>')
