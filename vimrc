@@ -316,6 +316,14 @@ let vimgdb_inferior_show = 0
 " mappings "
 """"""""""""
 "{{{
+" fix shifted function keys f1 to f4 for xterm
+" 	keycodes can be obtained through "$cat" in terminal
+exec "set <s-f1>=\e[1;2P"
+exec "set <s-f2>=\e[1;2Q"
+exec "set <s-f3>=\e[1;2R"
+exec "set <s-f4>=\e[1;2S"
+
+
 """"
 "" spell checking and highlighting
 """"
