@@ -23,7 +23,7 @@ exe "syntax include @asmCode " . s:asm_path
 
 syntax sync ccomment cComment minlines=50
 
-syntax cluster	cAll				contains=cKeyword,cBlock,cString,cComment,cUserLabel,asmBlock,cPreProc,cPreProcBlock,cPreProcIf0
+syntax cluster	cAll				contains=cKeyword,cBlock,cString,cComment,cUserLabel,asmBlock,asmTemplate,asmArgs,cPreProc,cPreProcBlock,cPreProcIf0
 
 " keywords
 syntax keyword	cKeyword			static register auto extern const inline restrict volatile __volatile__
@@ -56,14 +56,14 @@ syntax match	cPreProc			"^\s*\(%:\|#\)\s*\(if\s\+\|ifdef\s\+\|ifndef\s\+\)"
 syntax match	cPreProc			"^\s*\(%:\|#\)\s*\(else\|elif.\+\|endif\)"
 
 " #if | #ifdef | #ifndef macro blocks with first line not ending on '_H'
-syntax region	cPreProcBlock		matchgroup=cPreProc start="^\s*\(%:\|#\)\s*\(if\|ifdef\|ifndef\)\s\+[ \ta-zA-Z0-9<>|&=_]\+\([^_]H\|[^H]\)$" matchgroup=cPreProc end="^\s*\(%:\|#\)\s*endif" transparent contains=@cAll fold
+syntax region	cPreProcBlock		matchgroup=cPreProc start="^\s*\(%:\|#\)\s*\(if\|ifdef\|ifndef\)\s\+[ \ta-zA-Z0-9!<>|&=_()]\+\([^_]H\|[^H]\)$" matchgroup=cPreProc end="^\s*\(%:\|#\)\s*endif" transparent contains=@cAll fold
 syntax region	cNonePreProcBlock	matchgroup=cPreProc start="^\s*\(%:\|#\)\s*\(if\|ifdef\|ifndef\)\s\+\S\+_H$" matchgroup=cPreProc end="^\s*\(%:\|#\)\s*endif" transparent contains=@cAll
 syntax region	cPreProcIf0			start="^\s*\(%:\|#\)\s*if\s*0" end="^\s*\(%:\|#\)\s*\(endif\|else\|elif\)" contains=None fold
 
 " inline assembly
 syntax region	asmBlock			start="asm\s*[\(volatile\|goto\)]*\s*" end=")" contains=cKeyword,cComment,cPreProcBlock,asmTemplate,asmArgs transparent
 syntax region	asmTemplate			start='"' end='"' skip='\\"' contained contains=asmArgRef,@asmCode
-syntax region	asmArgs				start="\s*:\s*" end=")"me=e-1 contained contains=asmArgRefName,asmArgString,asmArgValue transparent
+syntax region	asmArgs				start="\s*:\s*" end=");"me=e-2 contained contains=asmArgRefName,asmArgString,asmArgValue,cComment transparent
 syntax match	asmArgRef			"%\d*"
 syntax match	asmArgRef			"%[\[{][a-zA-Z0-9_]*[\]}]"
 syntax match	asmArgRefName		"\[[a-zA-Z0-9_]*\]" contained
