@@ -15,8 +15,8 @@ syntax sync ccomment cComment minlines=50
 syntax cluster	asmAll				contains=asmComment,asmDirective,asmCode,cPreProc,cPreProcBlock,cPreProcIf0
 
 " comments
-syntax match	asmComment			"//.*"
-syntax region	asmComment			start="/\*" end="\*/"
+syntax match	asmComment			"//.*" contains=cTODO
+syntax region	asmComment			start="/\*" end="\*/" contains=cTODO
 
 " . directives
 syntax match	asmDirective		"\.[a-z][a-z]\+"
@@ -30,6 +30,9 @@ syntax keyword	asmCode				lis mullw mtspr mfspr mtsrr mtmsr lwarx stwcx bne sync
 " atmega keywords
 syntax keyword	asmCode				add adc adiw sub subi sbc sbci and andi or ori eor com neg sbr cbr inc dec tst clr ser mul mus musu fmul fmuls fmuls des rjmp ijmp eijmp jmp rcall icall eicall call ret reti cpse cp cpc cpi sbrc sbrs sbic sbis brbs brbc breq brne brcs brcc brsh brlo brm brpl brge brlt brhs brhc brt brtc brvs brvc brie brid mov movw ldi lds ld ldd sts st std lpm elpm spm in out push pop xch las lac lat lsl lsr rol ror ast swap bset bclr sbi cbi bst bld sec clc sen cln sez clz sei cli ses cls sev clv set clt seh clh break nop sleep wdr
 
+" TODO
+syntax keyword	cTodo				TODO FIXME XXX contained
+
 " C preprocessor
 syntax region	cPreProc			display matchgroup=cPreProc start="^\s*\(%:\|#\)\s*include" end="$" end="//"me=s-1 end="/\*"me=s-1 transparent contains=None,cPreProc
 syntax region	cPreProc			start="^\s*\(%:\|#\)\s*\(define\|undef\)\>"	skip="\\$" end="$" end="//"me=s-1 end="/\*"me=s-1 keepend fold
@@ -38,7 +41,7 @@ syntax match	cPreProc			"^\s*\(%:\|#\)\s*\(if\s\+\|ifdef\s\+\|ifndef\s\+\)"
 syntax match	cPreProc			"^\s*\(%:\|#\)\s*\(else\|elif.\+\|endif\)"
 
 " #if | #ifdef | #ifndef macro blocks with first line not ending on '_H'
-syntax region	cPreProcBlock		matchgroup=cPreProc start="^\s*\(%:\|#\)\s*\(if\|ifdef\|ifndef\)\s\+[ \ta-zA-Z0-9<>|&=_]\+\([^_]H\|[^H]\)$" matchgroup=cPreProc end="^\s*\(%:\|#\)\s*endif" transparent contains=@asmAll fold
+syntax region	cPreProcBlock		matchgroup=cPreProc start="^\s*\(%:\|#\)\s*\(if\|ifdef\|ifndef\)\s\+[ \ta-zA-Z0-9!<>|&=_()]\+\([^_]H\|[^H]\)$" matchgroup=cPreProc end="^\s*\(%:\|#\)\s*endif" transparent contains=@asmAll fold
 syntax region	cNonePreProcBlock	matchgroup=cPreProc start="^\s*\(%:\|#\)\s*\(if\|ifdef\|ifndef\)\s\+\S\+_H$" matchgroup=cPreProc end="^\s*\(%:\|#\)\s*endif" transparent contains=@asmAll
 syntax region	cPreProcIf0			start="^\s*\(%:\|#\)\s*if\s*0" end="^\s*\(%:\|#\)\s*\(endif\|else\|elif\)" contains=None fold
 
