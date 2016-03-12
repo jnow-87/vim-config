@@ -113,6 +113,19 @@ function s:syn_stack()
 	echo "hi: " . synIDattr(synID(line("."),col("."),1),"name") . ', trans: ' . synIDattr(synID(line("."),col("."),0),"name") . ", lo: " . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name")
 endfunc
 
+" enable spell checking and move between bad words
+function s:spell_ctrl(dir)
+	if &spell == 0
+		set spell
+	else
+		if a:dir == 'f'
+			normal ]s
+		else
+			normal [s
+		endif
+	endif
+endfunction
+
 " generate ctags for c, cpp, asm and java
 function s:ctags(file)
 	if &filetype == "c" || &filetype == "cpp" || &filetype == "asm"
@@ -211,7 +224,7 @@ hi def link MyTagListTagScope mblue
 hi def link MyTagListTitle mblue
 hi def link MyTagListComment mblue
 
-call s:ni_silent_map('<f6>', ':TlistToggle<cr>')
+call s:ni_silent_map('<f9>', ':TlistToggle<cr>')
 "}}}
 
 """"
@@ -297,7 +310,7 @@ highlight def link make_header mblue
 "" scratch
 """"
 "{{{
-call s:ni_silent_map('<f7>', ':ScratchToggle<cr>')
+call s:ni_silent_map('<f8>', ':ScratchToggle<cr>')
 "}}}
 
 """"
@@ -327,28 +340,29 @@ exec "set <s-f4>=\e[1;2S"
 """"
 "" spell checking and highlighting
 """"
+" enable spell checking and move between bad words
+call s:ni_silent_map('<f1>', ':call <sid>spell_ctrl("f")<cr>')
+call s:ni_silent_map('<f2>', ':call <sid>spell_ctrl("b")<cr>')
 
-" toggle spell checking
-call s:ni_silent_map('<f12>', ':set spell!<cr>')
-
-" find next miss-spelled word
-call s:ni_silent_map('<f1>', ']s')
+" disable spell checking
+call s:ni_silent_map('<s-f1>', ':set spell!<cr>')
 
 " add word under cursor to spellfile
-call s:ni_silent_map('<f2>', 'zg')
+call s:ni_silent_map('<s-f2>', 'zg')
+
 
 """"
 "" vim settings
 """"
 
 " syntax highlighting debug
-call s:ni_silent_map('<f3>', ':call <sid>syn_stack()<cr>')
+call s:ni_silent_map('<f12>', ':call <sid>syn_stack()<cr>')
 
 " toggle 'paste'
 call s:ni_silent_map('<f4>', ':set paste!<cr>')
 
 " toggle 'list' mode
-call s:ni_silent_map('<f9>', ':set list!<cr>')
+call s:ni_silent_map('<f3>', ':set list!<cr>')
 
 " toggle search highlighting
 call s:ni_silent_map('<f10>', ':set hls!<cr>')
