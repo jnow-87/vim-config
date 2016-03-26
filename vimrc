@@ -341,8 +341,8 @@ exec "set <s-f4>=\e[1;2S"
 "" spell checking and highlighting
 """"
 " enable spell checking and move between bad words
-call s:ni_silent_map('<f1>', ':call <sid>spell_ctrl("f")<cr>')
-call s:ni_silent_map('<f2>', ':call <sid>spell_ctrl("b")<cr>')
+call s:ni_silent_map('<f1>', ':call <sid>spell_ctrl("b")<cr>')
+call s:ni_silent_map('<f2>', ':call <sid>spell_ctrl("f")<cr>')
 
 " disable spell checking
 call s:ni_silent_map('<s-f1>', ':set spell!<cr>')
@@ -453,6 +453,9 @@ call s:ni_silent_map('<c-l>', ':tabnext<cr>')
 " abbreviations "
 """""""""""""""""
 "{{{
+" commands
+call s:cabbrev("make", "Make")
+
 " typos
 call s:cabbrev('W', 'w')
 call s:cabbrev('Q', 'q')
