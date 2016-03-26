@@ -23,7 +23,7 @@ exe "syntax include @asmCode " . s:asm_path
 
 syntax sync ccomment cComment minlines=50
 
-syntax cluster	cAll				contains=cKeyword,cBlock,cString,cComment,cUserLabel,asmBlock,asmTemplate,asmArgs,cPreProc,cPreProcBlock,cPreProcIf0
+syntax cluster	cAll				contains=cKeyword,cBlock,cString,cComment,cUserLabel,asmBlock,cPreProc,cPreProcBlock,cPreProcIf0
 
 " keywords
 syntax keyword	cKeyword			static register auto extern const inline restrict volatile __volatile__
@@ -32,7 +32,7 @@ syntax keyword	cKeyword			asm __asm__ contained
 syntax keyword	cKeyword			sizeof typeof attribute __attribute__ 
 syntax keyword	cKeyword			true false 
 syntax keyword	cKeyword			struct union enum typedef
-syntax keyword	cKeyword			int long short char void signed unsigned float double size_t time_t va_list bool int8_t int16_t int32_t int64_t uint8_t uint16_t uint32_t uint64_t addr_t register_t
+syntax keyword	cKeyword			int long short char void signed unsigned float double size_t ssize_t time_t va_list bool int8_t int16_t int32_t int64_t uint8_t uint16_t uint32_t uint64_t addr_t register_t intmax_t uintmax_t ptrdiff_t sptrdiff_t FILE
 syntax keyword	cTodo				TODO FIXME XXX contained
 
 " {}-block
@@ -46,14 +46,14 @@ syntax region	cComment			start="//" skip="\\$" end="$" keepend contains=cTodo,@S
 syntax region	cComment			matchgroup=cComment start="/\*" end="\*/" contains=cTodo,@Spell fold
 
 " labels
-syntax match	cUserLabel			display "^\zs\s*[^ \t\:]\+\s*\:\ze[^\:]*$"
+syntax match	cUserLabel			display "^\zs\s*[^ \/\t\:\"\']\+\s*\:\ze[^\:]*$"
 
 " preprocessor
 syntax region	cPreProc			display matchgroup=cPreProc start="^\s*\(%:\|#\)\s*include" end="$" end="//"me=s-1 end="/\*"me=s-1 transparent contains=None,cPreProc
 syntax region	cPreProc			start="^\s*\(%:\|#\)\s*\(define\|undef\)\>"	skip="\\$" end="$" end="//"me=s-1 end="/\*"me=s-1 keepend fold
 syntax region	cPreProc			start="^\s*\(%:\|#\)\s*\(pragma\|line\|warning\|warn\|error\)" skip="\\$" end="$" keepend
-syntax match	cPreProc			"^\s*\(%:\|#\)\s*\(if\s\+\|ifdef\s\+\|ifndef\s\+\)"
-syntax match	cPreProc			"^\s*\(%:\|#\)\s*\(else\|elif.\+\|endif\)"
+syntax match	cPreProc			"^\s*\(%:\|#\)\s*\(if\s\+\|ifdef\s\+\|ifndef\s\+\)" contains=cComment
+syntax match	cPreProc			"^\s*\(%:\|#\)\s*\(else\|elif.\+\|endif\)" contains=cComment
 
 " #if | #ifdef | #ifndef macro blocks with first line not ending on '_H'
 syntax region	cPreProcBlock		matchgroup=cPreProc start="^\s*\(%:\|#\)\s*\(if\|ifdef\|ifndef\)\s\+[ \ta-zA-Z0-9!<>|&=_()]\+\([^_]H\|[^H]\)$" matchgroup=cPreProc end="^\s*\(%:\|#\)\s*endif" transparent contains=@cAll fold
@@ -64,8 +64,8 @@ syntax region	cPreProcIf0			start="^\s*\(%:\|#\)\s*if\s*0" end="^\s*\(%:\|#\)\s*
 syntax region	asmBlock			start="asm\s*[\(volatile\|goto\)]*\s*" end=")" contains=cKeyword,cComment,cPreProcBlock,asmTemplate,asmArgs transparent
 syntax region	asmTemplate			start='"' end='"' skip='\\"' contained contains=asmArgRef,@asmCode
 syntax region	asmArgs				start="\s*:\s*" end=");"me=e-2 contained contains=asmArgRefName,asmArgString,asmArgValue,cComment transparent
-syntax match	asmArgRef			"%\d*"
-syntax match	asmArgRef			"%[\[{][a-zA-Z0-9_]*[\]}]"
+syntax match	asmArgRef			"%\d*" contained
+syntax match	asmArgRef			"%[\[{][a-zA-Z0-9_]*[\]}]" contained
 syntax match	asmArgRefName		"\[[a-zA-Z0-9_]*\]" contained
 syntax match	asmArgString		'"\([ib]\|=m\|=\?r\d*\|cr\d*\|memory\|cc\)"' contained
 syntax match	asmArgValue			"([^)]*)" contained contains=cKeyword
