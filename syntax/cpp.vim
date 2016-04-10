@@ -20,6 +20,8 @@ endif
 let b:current_syntax = "cpp"
 
 " C++ extentions
+syntax cluster	cppAll	contains=cppKeyword,cppString
+
 syn keyword	cppKeyword	new delete this friend using public protected private virtual explicit export throw try catch operator typeid mutable class typename template namespace "[<>]?"
 syn keyword	cppKeyword	 "\<\(const\|static\|dynamic\|reinterpret\)_cast\s*<"me=e-1" "\<\(const\|static\|dynamic\|reinterpret\)_cast\s*$"
 syn region	cCppString	start=+'+ skip=+\\\\\|\\"\|\\$+ excludenl end=+'+ contains=@Spell
