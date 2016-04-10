@@ -42,6 +42,7 @@ set tabpagemax=100
 set dir=/tmp
 set path=.,/usr/include,/usr/include/linux
 set updatetime=1000
+set wildmode=longest,full
 "}}}
 
 """"
