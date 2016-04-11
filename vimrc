@@ -154,8 +154,8 @@ highlight	mpurple			ctermfg=56
 highlight	Comment			ctermfg=27
 highlight	LineNr			ctermfg=88
 highlight	Search			ctermfg=0 ctermbg=1
-highlight	Pmenu			ctermfg=0 ctermbg=1
-highlight	PmenuSel		ctermfg=0 ctermbg=3
+highlight	Pmenu			ctermfg=255 ctermbg=24
+highlight	PmenuSel		ctermfg=255 ctermbg=31
 highlight	SpellBad		ctermfg=7 ctermbg=88
 highlight	SpellCap		ctermfg=7 ctermbg=21
 highlight	SpellLocal		ctermfg=7 ctermbg=57
@@ -186,10 +186,6 @@ autocmd	FileType c,cpp,asm,text match ExtraWhitespace	"\( \+$\)\|\(^\zs \+\ze[^ 
 "let g:clang_complete_loaded = 0
 let g:clang_library_path = "/usr/lib/llvm-3.7/lib"
 let g:clang_use_library = 1
-
-let g:clang_jumpto_declaration_key = "<C-]>"
-let g:clang_jumpto_back_key = "<C-T>"
-let g:clang_jumpto_declaration_in_preview_key = "<C-W>"
 
 let g:clang_complete_auto = 1
 let g:clang_auto_select = 1
@@ -376,6 +372,9 @@ call s:ni_silent_map('<f11>', ':set nu!<cr>')
 "" buffer operations
 """"
 
+" redraw
+call s:ni_silent_map('<c-b>', ':redraw<cr>')
+
 " movement
 nnoremap <silent> ´ $
 nnoremap <silent> ` :$<cr>
@@ -402,7 +401,7 @@ inoremap <silent> <expr> <s-left> getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<rig
 vnoremap <silent> <s-left> b
 nnoremap <silent> <s-right> v
 inoremap <silent> <expr> <s-right> getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v"
-vnoremap <silent> <s-right> w
+vnoremap <silent> <s-right> e
 nnoremap <silent> <s-up> v<up>
 inoremap <silent> <expr> <s-up> getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v\<up>"
 vnoremap <silent> <s-up> <up>
