@@ -384,9 +384,12 @@ nnoremap <silent> ° :0<cr>
 vnoremap <silent> ´ $
 vnoremap <silent> ` G
 vnoremap <silent> ° gg
-nnoremap <silent> <c-a> ggvG$
-inoremap <silent> <c-a> <esc>ggvG$
 nnoremap <silent> t <c-]>
+vnoremap <silent> <c-right> e
+vnoremap <silent> <c-left> ge
+call s:ni_silent_map('<c-left>', 'ge')
+call s:ni_silent_map('<c-right>', 'e')
+call s:ni_silent_map('<c-a>', 'ggvG$')
 
 " search
 nnoremap <silent> <cr> /<cr>
@@ -400,7 +403,7 @@ call s:ni_silent_map('<c-a-z>', ':redo<cr>')
 " text selection
 nnoremap <silent> <s-left> v
 inoremap <silent> <expr> <s-left> getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v"
-vnoremap <silent> <s-left> b
+vnoremap <silent> <s-left> ge
 nnoremap <silent> <s-right> v
 inoremap <silent> <expr> <s-right> getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v"
 vnoremap <silent> <s-right> e
