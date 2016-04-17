@@ -70,18 +70,6 @@ autocmd	BufRead * if &filetype == "" | setfiletype text | endif
 autocmd	VimEnter	* :call <sid>win_dimensions()
 autocmd	VimResized	* :call <sid>win_dimensions()
 "}}}
-
-""""
-"" tag handling
-""""
-"{{{
-set tag+=~/.vim/tags/stdc.tags		" generated with ctags on /usr/include
-
-autocmd BufWinEnter		*.java		:silent exe "set tags+=/tmp/" . fnamemodify($PWD, ':t') . ".tags"
-autocmd VimLeave		*.java		:silent exe "!rm /tmp/" . fnamemodify($PWD, ':t') . ".tags"
-autocmd VimEnter		*.java		:silent call <sid>ctags("")
-autocmd BufWritePost	*.java		:silent call <sid>ctags(fnamemodify(bufname("%"), ':.'))
-"}}}
 "}}}
 
 """""""""""""
@@ -90,8 +78,9 @@ autocmd BufWritePost	*.java		:silent call <sid>ctags(fnamemodify(bufname("%"), '
 "{{{
 " set certain window dimensions, depending on vim size
 function s:win_dimensions()
-	let g:Tlist_WinWidth = (&columns/5 <= 20) ? 20 : &columns/5
-	let g:scratchWinWidth = g:Tlist_WinWidth
+	let g:scratchWinWidth = (&columns/5 <= 20) ? 20 : &columns/5
+	let g:gtd_sym_window_width = (&columns/5 <= 20) ? 20 : &columns/5
+	let g:gtd_sym_preview_width = (&columns/3 <= 20) ? 20 : &columns/3
 	let g:makeWinHeight = (&window/5) <= 7 ? 7 : &window/5
 endfunction
 
@@ -126,17 +115,6 @@ function s:spell_ctrl(dir)
 			normal [s
 		endif
 	endif
-endfunction
-
-" generate ctags for c, cpp, asm and java
-function s:ctags(file)
-	if &filetype == "c" || &filetype == "cpp" || &filetype == "asm"
-		let l:lang_args = "--languages=c,c++ --c++-kinds=+p --c-kinds=+p --fields=+iaS --extra=+fq"
-	elseif &filetype == "java"
-		let l:lang_args = "--languages=java --java-kinds=+p --fields=+iaS --extra=+fq"
-	endif
-
-	exec "!ctags -R --tag-relative=yes --sort=yes " . l:lang_args . " -f /tmp/" . fnamemodify($PWD, ':t') . ".tags " . (a:file == "" ? "." : " --append " . a:file)
 endfunction
 
 " generate string for folded lines
@@ -259,23 +237,31 @@ let g:clang_periodic_quickfix = 0
 "}}}
 
 """"
-"" taglist
+"" gtd
 """"
 "{{{
-let Tlist_GainFocus_On_ToggleOpen=1
-let Tlist_Exit_OnlyWindow=1
-let Tlist_Use_SingleClick=1
-let Tlist_Auto_Highlight_Tag=1
-let Tlist_Sort_Type='name'
-let Tlist_Use_Right_Window=1
-let Tlist_Enable_Fold_Column=0
-let Tlist_Display_Prototype=1
+let g:gtd_sym_window_kinds_c		= ['c', 'd', 'f', 'g', 's', 't', 'u', 'v', 'x']
+let g:gtd_sym_window_kinds_asm		= ['d', 'l', 'm', 't']
+let g:gtd_sym_window_kinds_vim		= ['a', 'c', 'f', 'm', 'v']
+let g:gtd_sym_window_kinds_sh		= ['f']
+let g:gtd_sym_window_kinds_make		= ['m']
+let g:gtd_sym_window_kinds_python	= ['c', 'f', 'm', 'v', 'i']
+let g:gtd_sym_window_kinds_java		= ['c', 'e', 'f', 'g', 'i', 'l', 'm', 'p']
 
-hi def link MyTagListTagScope mblue
-hi def link MyTagListTitle mblue
-hi def link MyTagListComment mblue
+let g:gtd_sym_list_kinds_c			= ['d', 'f', 'g', 's', 't', 'u']
+let g:gtd_sym_list_kinds_asm		= ['d', 'l', 'm', 't']
+let g:gtd_sym_list_kinds_vim		= ['a', 'c', 'f', 'm', 'v']
+let g:gtd_sym_list_kinds_sh			= ['f']
+let g:gtd_sym_list_kinds_make		= ['m']
+let g:gtd_sym_list_kinds_python		= ['c', 'f', 'm', 'v', 'i']
+let g:gtd_sym_list_kinds_java		= ['c', 'e', 'f', 'g', 'i', 'l', 'm', 'p']
 
-call s:ni_silent_map('<f9>', ':TlistToggle<cr>')
+let g:gtd_sym_window_show_signature	= 1
+let g:gtd_sym_window_foldopen = 1
+let g:gtd_sym_menu = "» "
+
+
+call s:ni_silent_map('<f9>', ':GtdSymWindowToggle<cr>')
 "}}}
 
 """"
