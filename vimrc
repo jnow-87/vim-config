@@ -434,10 +434,8 @@ vnoremap <silent> ´ $
 vnoremap <silent> ` G
 vnoremap <silent> ° gg
 nnoremap <silent> t <c-]>
-vnoremap <silent> <c-right> e
-vnoremap <silent> <c-left> ge
-call s:ni_silent_map('<c-left>', 'ge')
-call s:ni_silent_map('<c-right>', 'e')
+nnoremap <silent> ^ 0
+vnoremap <silent> ^ 0
 call s:ni_silent_map('<c-a>', 'ggvG$')
 
 " search
@@ -466,6 +464,10 @@ vnoremap <silent> <s-down> <down>
 " indentation
 vnoremap <silent> <tab> >
 vnoremap <silent> <s-tab> <
+
+" folding
+nnoremap <silent> fo :0,$foldopen<cr>
+nnoremap <silent> fc :0,$foldclose<cr>
 
 """"
 "" window control
