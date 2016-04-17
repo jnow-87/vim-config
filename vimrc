@@ -43,6 +43,7 @@ set dir=/tmp
 set path=.,/usr/include,/usr/include/linux
 set updatetime=1000
 set wildmode=longest,full
+set foldtext=Foldtext()
 "}}}
 
 """"
@@ -136,6 +137,59 @@ function s:ctags(file)
 	endif
 
 	exec "!ctags -R --tag-relative=yes --sort=yes " . l:lang_args . " -f /tmp/" . fnamemodify($PWD, ':t') . ".tags " . (a:file == "" ? "." : " --append " . a:file)
+endfunction
+
+" generate string for folded lines
+function Foldtext()
+	let nlines = v:foldend - v:foldstart + 1
+	let s_lines = '| ' . printf("%10s", nlines . ' lines') . ' |'
+
+	let i = 0
+
+	" iterate through folded lines until a line with alpha characters is found
+	while 1
+		let s_line = getline(v:foldstart + i)
+		let i += 1
+
+		let s = -1
+		let e = -1
+		let j = 0
+
+		while s_line[j] != ''
+			" look for start of alpha string ([a-zA-Z#]
+			if (s_line[j] >= 'a' && s_line[j] <= 'z') ||  (s_line[j] >= 'A' && s_line[j] <= 'Z') || s_line[j] == '#'
+				let s = j
+
+ 				while 1
+					" look for end of string
+					if s_line[j] == '{' || s_line[j] == '}' || s_line[j] == '\\' || s_line[j] == ''
+						let e = j
+						break
+					endif
+
+					let j += 1
+				endwhile
+
+				break
+			endif
+
+			let j += 1
+		endwhile
+
+		if s != -1
+			" break if a valid line has been found
+			let s_line = strpart(s_line, s, e - s)
+			break
+
+		elseif i > nlines
+			" break if no more lines are available
+			break
+		endif
+	endwhile
+
+	let foldtextlength = strlen(s_line) + strlen(s_lines) + &foldcolumn
+
+	return s_line . repeat(' ', winwidth(0) - foldtextlength - 8) . s_lines . "        "
 endfunction
 "}}}
 
@@ -335,7 +389,6 @@ exec "set <s-f2>=\e[1;2Q"
 exec "set <s-f3>=\e[1;2R"
 exec "set <s-f4>=\e[1;2S"
 
-
 """"
 "" spell checking and highlighting
 """"
@@ -349,11 +402,9 @@ call s:ni_silent_map('<s-f1>', ':set spell!<cr>')
 " add word under cursor to spellfile
 call s:ni_silent_map('<s-f2>', 'zg')
 
-
 """"
 "" vim settings
 """"
-
 " syntax highlighting debug
 call s:ni_silent_map('<f12>', ':call <sid>syn_stack()<cr>')
 
@@ -369,11 +420,9 @@ call s:ni_silent_map('<f10>', ':set hls!<cr>')
 " toggle line numbers
 call s:ni_silent_map('<f11>', ':set nu!<cr>')
 
-
 """"
 "" buffer operations
 """"
-
 " redraw
 call s:ni_silent_map('<c-b>', ':redraw<cr>')
 
@@ -419,9 +468,8 @@ vnoremap <silent> <tab> >
 vnoremap <silent> <s-tab> <
 
 """"
-"" windows control
+"" window control
 """""
-
 " movement
 call s:ni_silent_map('<c-pagedown>', ':wincmd w<cr>')
 call s:ni_silent_map('<c-j>', ':wincmd w<cr>')
@@ -441,7 +489,6 @@ call s:ni_silent_map('<c-a-k>', '<c-w>+')
 """"
 "" tab control
 """"
-
 " open/close
 nmap <c-o> :tabnew 
 imap <c-o> <esc>:tabnew 
