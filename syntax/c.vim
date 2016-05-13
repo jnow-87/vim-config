@@ -6,6 +6,8 @@ if exists("b:current_syntax")
   finish
 endif
 
+let g:syntax_c_fold_comment = get(g:, "syntax_c_fold_comment", 1)
+
 let b:current_syntax = "c"
 
 " read asm syntax file
@@ -43,7 +45,12 @@ syntax region	cString				start=+L\="+ skip=+\\\\\|\\"+ end=+"+ contains=@Spell
 
 " comments
 syntax region	cComment			start="//" skip="\\$" end="$" keepend contains=cTodo,@Spell
+
+if g:syntax_c_fold_comment == 1
 syntax region	cComment			matchgroup=cComment start="/\*" end="\*/" contains=cTodo,@Spell fold
+else
+syntax region	cComment			matchgroup=cComment start="/\*" end="\*/" contains=cTodo,@Spell
+endif
 
 " labels
 syntax match	cUserLabel			display "^\zs\s*[^ \/\t\:\"\']\+\s*\:\ze[^\:]*$"

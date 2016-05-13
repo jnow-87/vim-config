@@ -205,6 +205,9 @@ highlight	clang_arg		ctermbg=33
 
 " match extra whitespaces
 autocmd	FileType c,cpp,asm,text match ExtraWhitespace	"\( \+$\)\|\(^\zs \+\ze[^ \*]\+\)\|\([^\t]\+\zs\t\+\ze$\)"
+
+" config
+let g:syntax_c_fold_comment = 0
 "}}}
 
 """""""""""""""""
