@@ -426,6 +426,7 @@ call s:ni_silent_map('<c-a>', 'ggvG$')
 
 " search
 nnoremap <silent> <cr> /<cr>
+vnoremap <silent> <cr> /<cr>
 nnoremap <silent> <backspace> ?<cr>
 nnoremap <silent> s :set hls<cr>:let @/ = '\<' . expand('<cword>') . '\>'<cr>
 
