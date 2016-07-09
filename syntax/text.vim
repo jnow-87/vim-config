@@ -4,4 +4,4 @@ syn match comment "^#.*"
 hi def link heading mlblue
 hi def link comment mblue
 
-set commentstring=#%s
+setlocal commentstring=#%s
