@@ -32,7 +32,7 @@ set tabstop=4
 set shiftwidth=4
 set complete=.,w,b,u,t,i
 "set complete+=kspell
-set completeopt=menuone,longest
+set completeopt=menu,longest
 set pumheight=10
 set conceallevel=3
 set concealcursor=vinc
@@ -42,7 +42,7 @@ set tabpagemax=100
 set dir=/tmp
 set path=.,/usr/include,/usr/include/linux
 set updatetime=1000
-set wildmode=longest,full
+"set wildmode=longest,full
 set foldtext=Foldtext()
 "}}}
 
