@@ -6,7 +6,10 @@ if exists("b:current_syntax")
   finish
 endif
 
+let g:syntax_c_fold = get(g:, "syntax_c_fold", 1)
+let b:syntax_c_fold = get(b:, "syntax_c_fold", 1)
 let g:syntax_c_fold_comment = get(g:, "syntax_c_fold_comment", 1)
+let b:syntax_c_fold_comment = get(b:, "syntax_c_fold_comment", 1)
 
 let b:current_syntax = "c"
 
@@ -38,7 +41,11 @@ syntax keyword	cKeyword			int long short char void signed unsigned float double 
 syntax keyword	cTodo				TODO FIXME XXX contained
 
 " {}-block
+if g:syntax_c_fold == 1 && b:syntax_c_fold == 1
 syntax region	cBlock				start="{" end="}" transparent fold
+else
+syntax region	cBlock				start="{" end="}" transparent
+endif
 
 " string
 syntax region	cString				start=+L\="+ skip=+\\\\\|\\"+ end=+"+ contains=@Spell
@@ -46,7 +53,7 @@ syntax region	cString				start=+L\="+ skip=+\\\\\|\\"+ end=+"+ contains=@Spell
 " comments
 syntax region	cComment			start="//" skip="\\$" end="$" keepend contains=cTodo,@Spell
 
-if g:syntax_c_fold_comment == 1
+if g:syntax_c_fold_comment == 1 && b:syntax_c_fold_comment == 1
 syntax region	cComment			matchgroup=cComment start="/\*" end="\*/" contains=cTodo,@Spell fold
 else
 syntax region	cComment			matchgroup=cComment start="/\*" end="\*/" contains=cTodo,@Spell
@@ -57,15 +64,31 @@ syntax match	cUserLabel			display "^\zs\s*[^ \/\t\:\"\']\+\s*\:\ze[^\:]*$"
 
 " preprocessor
 syntax region	cPreProc			display matchgroup=cPreProc start="^\s*\(%:\|#\)\s*include" end="$" end="//"me=s-1 end="/\*"me=s-1 transparent contains=None,cPreProc
+
+if g:syntax_c_fold == 1 && b:syntax_c_fold == 1
 syntax region	cPreProc			start="^\s*\(%:\|#\)\s*\(define\|undef\)\>"	skip="\\$" end="$" end="//"me=s-1 end="/\*"me=s-1 keepend fold
+else
+syntax region	cPreProc			start="^\s*\(%:\|#\)\s*\(define\|undef\)\>"	skip="\\$" end="$" end="//"me=s-1 end="/\*"me=s-1 keepend
+endif
+
 syntax region	cPreProc			start="^\s*\(%:\|#\)\s*\(pragma\|line\|warning\|warn\|error\)" skip="\\$" end="$" keepend
 syntax match	cPreProc			"^\s*\(%:\|#\)\s*\(if\s\+\|ifdef\s\+\|ifndef\s\+\)" contains=cComment
 syntax match	cPreProc			"^\s*\(%:\|#\)\s*\(else\|elif.\+\|endif\)" contains=cComment
 
 " #if | #ifdef | #ifndef macro blocks with first line not ending on '_H'
+if g:syntax_c_fold == 1 && b:syntax_c_fold == 1
 syntax region	cPreProcBlock		matchgroup=cPreProc start="^\s*\(%:\|#\)\s*\(if\|ifdef\|ifndef\)\s\+[ \ta-zA-Z0-9!<>|&=_()]\+\([^_]H\|[^H]\)$" matchgroup=cPreProc end="^\s*\(%:\|#\)\s*endif" transparent contains=@cAll,@cppAll fold
+else
+syntax region	cPreProcBlock		matchgroup=cPreProc start="^\s*\(%:\|#\)\s*\(if\|ifdef\|ifndef\)\s\+[ \ta-zA-Z0-9!<>|&=_()]\+\([^_]H\|[^H]\)$" matchgroup=cPreProc end="^\s*\(%:\|#\)\s*endif" transparent contains=@cAll,@cppAll
+endif
+
 syntax region	cNonePreProcBlock	matchgroup=cPreProc start="^\s*\(%:\|#\)\s*\(if\|ifdef\|ifndef\)\s\+\S\+_H$" matchgroup=cPreProc end="^\s*\(%:\|#\)\s*endif" transparent contains=@cAll,@cppAll
+
+if g:syntax_c_fold == 1 && b:syntax_c_fold == 1
 syntax region	cPreProcIf0			start="^\s*\(%:\|#\)\s*if\s*0" end="^\s*\(%:\|#\)\s*\(endif\|else\|elif\)" contains=None fold
+else
+syntax region	cPreProcIf0			start="^\s*\(%:\|#\)\s*if\s*0" end="^\s*\(%:\|#\)\s*\(endif\|else\|elif\)" contains=None
+endif
 
 " inline assembly
 syntax region	asmBlock			start="asm\s*[\(volatile\|goto\)]*\s*" end=")" contains=cKeyword,cComment,cPreProcBlock,asmTemplate,asmArgs transparent
