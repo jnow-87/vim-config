@@ -412,9 +412,6 @@ call s:ni_silent_map('<f11>', ':set nu!<cr>')
 """"
 "" buffer operations
 """"
-" redraw
-call s:ni_silent_map('<c-b>', ':redraw<cr>')
-
 " movement
 nnoremap <silent> ´ $
 nnoremap <silent> ` :$<cr>
