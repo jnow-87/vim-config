@@ -119,7 +119,4 @@ if !exists("did_yacc_syn_inits")
   hi def link yaccCodeStart		mlblue
 endif
 
-setlocal foldmethod=syntax
-setlocal foldnestmax=1
-
 let b:current_syntax = "yacc"
