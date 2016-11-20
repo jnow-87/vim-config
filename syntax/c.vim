@@ -60,7 +60,7 @@ syntax region	cComment			matchgroup=cComment start="/\*" end="\*/" contains=cTod
 endif
 
 " labels
-syntax match	cUserLabel			display "^\zs\s*[^ \/\t\:\"\']\+\s*\:\ze[^\:]*$"
+syntax match	cUserLabel			display "^\zs[^ \/\t\:\"\']\+\s*\:\ze[^\:]*$"
 
 " preprocessor
 syntax region	cPreProc			display matchgroup=cPreProc start="^\s*\(%:\|#\)\s*include" end="$" end="//"me=s-1 end="/\*"me=s-1 transparent contains=None,cPreProc
@@ -107,7 +107,7 @@ hi def link cPreProc				mblue
 hi def link cPreProcS				mblue
 hi def link cPreProcIf0				mblue
 hi def link cKeyword				mblue
-hi def link cString					white
+hi def link cString					mdefit
 hi def link cTodo					Todo
 hi def link asmArgString			mlblue
 hi def link asmArgRef				mlblue
