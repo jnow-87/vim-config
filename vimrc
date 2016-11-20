@@ -22,7 +22,7 @@ set showcmd
 set ignorecase
 set smartcase
 set incsearch
-"set mouse=a
+set mouse=ni
 set number
 set numberwidth=2
 set norelativenumber
@@ -44,6 +44,9 @@ set path=.,/usr/include,/usr/include/linux
 set updatetime=1000
 "set wildmode=longest,full
 set foldtext=Foldtext()
+set splitright
+set splitbelow
+set noequalalways
 
 exec "set tags+=/tmp/" . getpid() . ".tags"
 "}}}
@@ -130,7 +133,7 @@ endfunction
 " generate string for folded lines
 function Foldtext()
 	let nlines = v:foldend - v:foldstart + 1
-	let s_lines = '| ' . printf("%10s", nlines . ' lines') . ' |'
+	let s_lines = printf("%10s", nlines . ' lines')
 
 	let i = 0
 
@@ -187,6 +190,7 @@ endfunction
 "{{{
 colorscheme default
 
+highlight	mdefit			cterm=italic
 highlight	mred			ctermfg=124
 highlight	mlblue			ctermfg=6
 highlight	mblue			ctermfg=27
@@ -218,6 +222,7 @@ autocmd	FileType c,cpp,asm,text match ExtraWhitespace	"\( \+$\)\|\(^\zs \+\ze[^ 
 
 " config
 let g:syntax_c_fold_comment = 0
+let sh_fold_enabled = 1
 "}}}
 
 """""""""""""""""
@@ -233,6 +238,7 @@ let g:clang_library_path = "/usr/lib/llvm-3.7/lib"
 let g:clang_use_library = 1
 
 let g:clang_complete_auto = 1
+let g:clang_complete_fallback = 1
 let g:clang_auto_select = 1
 let g:clang_complete_macros = 1
 let g:clang_complete_copen = 0
@@ -440,7 +446,7 @@ call s:ni_silent_map('<c-a>', 'ggvG$')
 nnoremap <silent> <cr> /<cr>
 vnoremap <silent> <cr> /<cr>
 nnoremap <silent> <backspace> ?<cr>
-nnoremap <silent> s :set hls<cr>:let @/ = '\<' . expand('<cword>') . '\>'<cr>
+nnoremap <silent> s :set hls<cr>:let @/ = '\<' . expand('<cword>') . '\>'<cr>:let @s = expand('<cword>')<cr>
 
 " undo/redo
 call s:ni_silent_map('<c-z>', ':undo<cr>')
@@ -459,6 +465,8 @@ vnoremap <silent> <s-up> <up>
 nnoremap <silent> <s-down> v<down>
 inoremap <silent> <expr> <s-down> getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v\<down>"
 vnoremap <silent> <s-down> <down>
+vnoremap <silent> d di
+snoremap <silent> d di
 
 " indentation
 vnoremap <silent> <tab> >
