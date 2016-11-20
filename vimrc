@@ -44,6 +44,8 @@ set path=.,/usr/include,/usr/include/linux
 set updatetime=1000
 "set wildmode=longest,full
 set foldtext=Foldtext()
+
+exec "set tags+=/tmp/" . getpid() . ".tags"
 "}}}
 
 """"
@@ -69,6 +71,9 @@ autocmd	BufRead * if &filetype == "" | setfiletype text | endif
 " window dimensions
 autocmd	VimEnter	* :call <sid>win_dimensions()
 autocmd	VimResized	* :call <sid>win_dimensions()
+
+" delete tags file
+autocmd VimLeave	* :exec "!rm /tmp/" . getpid() . ".tags"
 "}}}
 "}}}
 
@@ -103,6 +108,11 @@ function s:syn_stack()
 	echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 	echo "hi: " . synIDattr(synID(line("."),col("."),1),"name") . ', trans: ' . synIDattr(synID(line("."),col("."),0),"name") . ", lo: " . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name")
 endfunc
+
+" generate tags file /tmp/<dirname>.tags
+function s:gentags()
+	call system("ctags --append --tag-relative=yes -R -f /tmp/" . getpid() . ".tags .")
+endfunction
 
 " enable spell checking and move between bad words
 function s:spell_ctrl(dir)
@@ -419,7 +429,9 @@ nnoremap <silent> ° :0<cr>
 vnoremap <silent> ´ $
 vnoremap <silent> ` G
 vnoremap <silent> ° gg
-nnoremap <silent> t <c-]>
+nnoremap <silent> tt <c-]>
+nnoremap <silent> gtt g<c-]>
+nnoremap <silent> <s-t> <c-t>
 nnoremap <silent> ^ 0
 vnoremap <silent> ^ 0
 call s:ni_silent_map('<c-a>', 'ggvG$')
@@ -503,4 +515,11 @@ call s:cabbrev('Q', 'q')
 
 " hex editor
 call s:cabbrev('hex', '%!xxd')
+"}}}
+
+""""""""""""
+" commands "
+""""""""""""
+"{{{
+command Gentags call s:gentags()
 "}}}
