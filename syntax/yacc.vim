@@ -84,8 +84,10 @@ syn	match	yaccString	"'[^']*'"	contained
 " ---------------------------------------------------------------------
 " I'd really like to highlight just the outer {}.  Any suggestions??? {{{1
 syn	match	yaccCurlyError	"[{}]"
-syn	region	yaccAction	matchgroup=yaccCurly start="{" end="}" 	contains=@cCode,yaccVar		contained
+syn	region	yaccAction	matchgroup=yaccCurly start="{" end="}" 	contains=@cCode,yaccVar,yaccLoc		contained
 syn	match	yaccVar	'\$\d\+\|\$\$\|\$<\I\i*>\$\|\$<\I\i*>\d\+'	containedin=cParen,cPreProc,cMulti	contained
+syn	match	yaccLoc	'@\d\+\|\$\$\|\$<\I\i*>\$\|\$<\I\i*>\d\+'	containedin=cParen,cPreProc,cMulti	contained
+
 
 " ---------------------------------------------------------------------
 " Yacc synchronization: {{{1
@@ -114,6 +116,7 @@ if !exists("did_yacc_syn_inits")
   hi def link yaccType					mblue
   hi def link yaccUnionStart			mlblue
   hi def link yaccVar					mlblue
+  hi def link yaccLoc					mlblue
   hi def link yaccInitialActionStart	mlblue
   hi def link yaccDestructorStart	mlblue
   hi def link yaccCodeStart		mlblue
