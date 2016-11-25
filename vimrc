@@ -361,6 +361,11 @@ let g:make_win_height = 7
 call s:ni_silent_map('<f5>', ':Make<cr>')
 call s:ni_silent_map('<s-f5>', ':MakeToggle<cr>')
 
+nnoremap en :MakeCycle e n<cr>
+nnoremap ep :MakeCycle e p<cr>
+nnoremap wn :MakeCycle w n<cr>
+nnoremap wp :MakeCycle w p<cr>
+
 highlight def link make_header mblue
 "}}}
 
