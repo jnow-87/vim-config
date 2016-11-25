@@ -381,6 +381,20 @@ let vimgdb_use_xterm = 0
 let vimgdb_inferior_show = 0
 "let vimgdb_gdb_cmd = 'avr-gdb -ex \"target remote 127.0.0.1:1212\"'
 "}}}
+
+""""
+"" snippet
+""""
+let g:snippet_base = "~/.vim/snippets"
+
+inoremap <leader>titem	<esc>:call Snippet("itemize.tex")<cr>
+inoremap <leader>tenum	<esc>:call Snippet("enum.tex")<cr>
+inoremap <leader>tdesc	<esc>:call Snippet("description.tex")<cr>
+inoremap <leader>talign	<esc>:call Snippet("align.tex")<cr>
+inoremap <leader>ttab	<esc>:call Snippet("table.tex")<cr>
+inoremap <leader>tfig	<esc>:call Snippet("figure.tex")<cr>
+inoremap <leader>ttfig	<esc>:call Snippet("tabfigure.tex")<cr>
+
 "}}}
 
 """"""""""""
