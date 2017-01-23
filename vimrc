@@ -49,6 +49,8 @@ set splitbelow
 set noequalalways
 
 exec "set tags+=/tmp/" . getpid() . ".tags"
+
+let mapleader = '\'
 "}}}
 
 """"
@@ -63,10 +65,10 @@ autocmd	FileType gitcommit setlocal colorcolumn=80 | setlocal tabstop=4
 autocmd	VimEnter * if &diff | execute 'windo set wrap' | endif
 
 " add filetype extensions
-autocmd	BufRead,BufNewFile *.lds setf ld
-autocmd	BufRead,BufNewFile *.gperf setf gperf
-autocmd	BufRead,BufNewFile *.per setf per
-autocmd	BufRead,BufNewFile pconfig,Pconfig setf kconfig
+autocmd	BufRead,BufNewFile *.lds			setf ld
+autocmd	BufRead,BufNewFile *.gperf			setf gperf
+autocmd	BufRead,BufNewFile *.per			setf per
+autocmd	BufRead,BufNewFile pconfig,Pconfig	setf kconfig
 
 " default filetype to text
 autocmd	BufRead * if &filetype == "" | setfiletype text | endif
@@ -76,7 +78,7 @@ autocmd	VimEnter	* :call <sid>win_dimensions()
 autocmd	VimResized	* :call <sid>win_dimensions()
 
 " delete tags file
-autocmd VimLeave	* :exec "!rm /tmp/" . getpid() . ".tags"
+autocmd VimLeave	* :exec "silent !rm -f /tmp/" . getpid() . ".tags"
 "}}}
 "}}}
 
@@ -223,6 +225,8 @@ autocmd	FileType c,cpp,asm,text match ExtraWhitespace	"\( \+$\)\|\(^\zs \+\ze[^ 
 " config
 let g:syntax_c_fold_comment = 0
 let sh_fold_enabled = 1
+let yacc_uses_cpp = 1
+let lex_uses_cpp = 1
 "}}}
 
 """""""""""""""""
@@ -259,6 +263,33 @@ let g:clang_periodic_quickfix = 0
 "" gtd
 """"
 "{{{
+" symbol window config
+let g:gtd_sym_window_show_signature	= 1
+let g:gtd_sym_window_foldopen = 1
+
+" symbol menu config
+let g:gtd_sym_menu = "» "
+
+" mappings
+call s:ni_map('<f9>', ':GtdSymWindowToggle<cr>')
+
+let g:gtd_key_def_split			= "lf"
+let g:gtd_key_def_tab			= "tf"
+let g:gtd_key_decl_split		= "lp"
+let g:gtd_key_decl_tab			= "tp"
+
+let g:gtd_key_def_split_glob	= "glf"
+let g:gtd_key_def_tab_glob		= "gtf"
+let g:gtd_key_decl_split_glob	= "glp"
+let g:gtd_key_decl_tab_glob		= "gtp"
+
+let g:gtd_key_head_list			= "lh"
+let g:gtd_key_head_focus		= "th"
+
+let g:gtd_key_opt_menu			= "lm"
+let g:gtd_key_sym_menu_loc		= "ls"
+
+" kinds of symbols to display in gtd window
 let g:gtd_sym_window_kinds_c		= ['c', 'd', 'f', 'g', 's', 't', 'u', 'v', 'x']
 let g:gtd_sym_window_kinds_asm		= ['d', 'l', 'm', 't']
 let g:gtd_sym_window_kinds_vim		= ['a', 'c', 'f', 'm', 'v']
@@ -267,6 +298,7 @@ let g:gtd_sym_window_kinds_make		= ['m']
 let g:gtd_sym_window_kinds_python	= ['c', 'f', 'm', 'v', 'i']
 let g:gtd_sym_window_kinds_java		= ['c', 'e', 'f', 'g', 'i', 'l', 'm', 'p']
 
+" kinds of symbols to keep in symbol list
 let g:gtd_sym_list_kinds_c			= ['d', 'f', 'g', 's', 't', 'u']
 let g:gtd_sym_list_kinds_asm		= ['d', 'l', 'm', 't']
 let g:gtd_sym_list_kinds_vim		= ['a', 'c', 'f', 'm', 'v']
@@ -274,13 +306,6 @@ let g:gtd_sym_list_kinds_sh			= ['f']
 let g:gtd_sym_list_kinds_make		= ['m']
 let g:gtd_sym_list_kinds_python		= ['c', 'f', 'm', 'v', 'i']
 let g:gtd_sym_list_kinds_java		= ['c', 'e', 'f', 'g', 'i', 'l', 'm', 'p']
-
-let g:gtd_sym_window_show_signature	= 1
-let g:gtd_sym_window_foldopen = 1
-let g:gtd_sym_menu = "» "
-
-
-call s:ni_silent_map('<f9>', ':GtdSymWindowToggle<cr>')
 "}}}
 
 """"
@@ -341,14 +366,6 @@ let g:tagcomplete_ignore_filetype = {
 	\ "objc" : 1,
 	\ "objcpp" : 1,
 \ }
-"}}}
-
-""""
-"" lex/yacc
-""""
-"{{{
-let yacc_uses_cpp = 1
-let lex_uses_cpp = 1
 "}}}
 
 """"
