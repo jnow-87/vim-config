@@ -94,10 +94,60 @@ function s:win_dimensions()
 	let g:makeWinHeight = (&window/5) <= 7 ? 7 : &window/5
 endfunction
 
-" insert normal and insert mode mappings
-function s:ni_silent_map(lhs, rhs)
+" create normal mode mapping
+function s:n_map(lhs, rhs)
 	exec 'nnoremap <silent> ' . a:lhs . ' ' . a:rhs
+endfunction
+
+" create insert mode mapping
+function s:i_map(lhs, rhs)
 	exec 'inoremap <silent> ' . a:lhs . ' <right><esc>' . a:rhs . '<insert>'
+endfunction
+
+" create visual mode mapping
+function s:v_map(lhs, rhs)
+	exec 'vnoremap <silent> ' . a:lhs . ' ' . a:rhs
+	exec 'snoremap <silent> ' . a:lhs . ' ' . a:rhs
+endfunction
+
+" create normal and insert mode mapping
+function s:ni_map(lhs, rhs)
+	call s:n_map(a:lhs, a:rhs)
+	call s:i_map(a:lhs, a:rhs)
+endfunction
+
+" create normal and visual mode mapping
+function s:nv_map(lhs, rhs)
+	call s:n_map(a:lhs, a:rhs)
+	call s:v_map(a:lhs, a:rhs)
+endfunction
+
+" delete line from cursor till user supplied charater
+function s:del_until(feedkey)
+	let l:sleeped = 800
+
+	" wait for user input
+	while l:sleeped > 0 && getchar(1) == 0
+		sleep 50m
+		let l:sleeped = l:sleeped - 50 
+	endwhile
+
+	" get user input
+	let c = nr2char(getchar(1))
+
+	" check user input
+	if c == '$'
+		" '$'
+		exec "normal! d$"
+
+	elseif c != ""
+		" default non-empty
+		exec "normal! dt" . nr2char(getchar(0))
+	endif
+
+	if a:feedkey != ""
+		call feedkeys(a:feedkey)
+	endif
 endfunction
 
 " brief	add command alias for 'exe'-mode commands
@@ -375,13 +425,21 @@ let g:tagcomplete_ignore_filetype = {
 let g:make_win_title = "make"
 let g:make_win_height = 7
 
-call s:ni_silent_map('<f5>', ':Make<cr>')
-call s:ni_silent_map('<s-f5>', ':MakeToggle<cr>')
+" run make
+call s:ni_map('<f5>', ':Make<cr>')
+call s:ni_map('<a-f5>', ':MakeToggle<cr>')
 
-nnoremap en :MakeCycle e n<cr>
-nnoremap ep :MakeCycle e p<cr>
-nnoremap wn :MakeCycle w n<cr>
-nnoremap wp :MakeCycle w p<cr>
+" cycle through errors
+call s:n_map('e', ':MakeCycle e n<cr>')
+call s:n_map('<a-e>', ':MakeCycle e p<cr>')
+call s:ni_map('<c-e>', ':MakeCycle e n<cr>')
+call s:ni_map('<c-a-e>', ':MakeCycle e p<cr>')
+
+" cycle through warnings
+call s:n_map('w', ':MakeCycle w n<cr>')
+call s:n_map('<a-w>', ':MakeCycle w p<cr>')
+call s:ni_map('<c-w>', ':MakeCycle w n<cr>')
+call s:ni_map('<c-a-w>', ':MakeCycle w p<cr>')
 
 highlight def link make_header mblue
 "}}}
@@ -390,7 +448,7 @@ highlight def link make_header mblue
 "" scratch
 """"
 "{{{
-call s:ni_silent_map('<f8>', ':ScratchToggle<cr>')
+call s:ni_map('<f8>', ':ScratchToggle<cr>')
 "}}}
 
 """"
@@ -426,117 +484,125 @@ exec "set <s-f4>=\e[1;2S"
 """"
 "" spell checking and highlighting
 """"
-" enable spell checking and move between bad words
-call s:ni_silent_map('<f1>', ':call <sid>spell_ctrl("b")<cr>')
-call s:ni_silent_map('<f2>', ':call <sid>spell_ctrl("f")<cr>')
+" toggle spell checking and move between bad words
+call s:ni_map('<f11>', ':call <sid>spell_ctrl("b")<cr>')
+call s:ni_map('<f12>', ':call <sid>spell_ctrl("f")<cr>')
 
 " disable spell checking
-call s:ni_silent_map('<s-f1>', ':set spell!<cr>')
+call s:ni_map('<a-f11>', ':set spell!<cr>')
 
 " add word under cursor to spellfile
-call s:ni_silent_map('<s-f2>', 'zg')
+call s:ni_map('<a-f12>', 'zg')
 
 """"
 "" vim settings
 """"
 " syntax highlighting debug
-call s:ni_silent_map('<f12>', ':call <sid>syn_stack()<cr>')
-
-" toggle 'paste'
-call s:ni_silent_map('<f4>', ':set paste!<cr>')
-
-" toggle 'list' mode
-call s:ni_silent_map('<f3>', ':set list!<cr>')
-
-" toggle search highlighting
-call s:ni_silent_map('<f10>', ':set hls!<cr>')
+call s:ni_map('<f1>', ':call <sid>syn_stack()<cr>')
 
 " toggle line numbers
-call s:ni_silent_map('<f11>', ':set nu!<cr>')
+call s:ni_map('<f2>', ':set nu!<cr>')
+
+" toggle 'list' mode
+call s:ni_map('<f3>', ':set list!<cr>')
+
+" toggle 'paste'
+call s:ni_map('<f4>', ':set paste!<cr>')
+
+" toggle search highlighting
+call s:ni_map('<f10>', ':set hls!<cr>')
 
 """"
 "" buffer operations
 """"
 " movement
-nnoremap <silent> ´ $
-nnoremap <silent> ` :$<cr>
-nnoremap <silent> ° :0<cr>
-vnoremap <silent> ´ $
-vnoremap <silent> ` G
-vnoremap <silent> ° gg
-nnoremap <silent> tt <c-]>
-nnoremap <silent> gtt g<c-]>
-nnoremap <silent> <s-t> <c-t>
-nnoremap <silent> ^ 0
-vnoremap <silent> ^ 0
-call s:ni_silent_map('<c-a>', 'ggvG$')
+	" goto line x
+nnoremap <expr> l ':' . input("") . '<cr>'
 
-" search
-nnoremap <silent> <cr> /<cr>
-vnoremap <silent> <cr> /<cr>
-nnoremap <silent> <backspace> ?<cr>
-nnoremap <silent> s :set hls<cr>:let @/ = '\<' . expand('<cword>') . '\>'<cr>:let @s = expand('<cword>')<cr>
+	" goto line 0
+call s:ni_map('<a-s-up>', ':0<cr>')
+call s:v_map('<a-s-up>', 'gg')
 
-" undo/redo
-call s:ni_silent_map('<c-z>', ':undo<cr>')
-call s:ni_silent_map('<c-a-z>', ':redo<cr>')
+	" goto last line
+call s:ni_map('<a-s-down>', ':$<cr>')
+call s:v_map('<a-s-down>', 'G$')
+
+	" select all
+call s:ni_map('<c-a>', 'ggvG$')
+
+	" goto tag
+call s:n_map('tt', '<c-]>')
+call s:n_map('gtt', 'g<c-]>')
+call s:n_map('<a-t>', '<c-t>')
 
 " text selection
-nnoremap <silent> <s-left> v
-inoremap <silent> <expr> <s-left> getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v"
-vnoremap <silent> <s-left> ge
-nnoremap <silent> <s-right> v
-inoremap <silent> <expr> <s-right> getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v"
-vnoremap <silent> <s-right> e
-nnoremap <silent> <s-up> v<up>
-inoremap <silent> <expr> <s-up> getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v\<up>"
-vnoremap <silent> <s-up> <up>
-nnoremap <silent> <s-down> v<down>
-inoremap <silent> <expr> <s-down> getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v\<down>"
-vnoremap <silent> <s-down> <down>
-vnoremap <silent> d di
-snoremap <silent> d di
+call s:n_map('<s-left>', 'v')
+call s:n_map('<s-right>', 'v')
+call s:n_map('<s-up>', 'v<up>')
+call s:n_map('<s-down>', 'v<down>')
+call s:v_map('<s-left>', 'ge')
+call s:v_map('<s-a-left>', '0')
+call s:v_map('<s-right>', 'e')
+call s:v_map('<s-a-right>', '$')
+call s:v_map('<s-up>', '<up>')
+call s:v_map('<s-down>', '<down>')
+inoremap <silent> <expr> <s-left>	getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v"
+inoremap <silent> <expr> <s-right>	getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v"
+inoremap <silent> <expr> <s-up>		getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v\<up>"
+inoremap <silent> <expr> <s-down>	getpos('.')[2] == 1 ? "\<esc>v" : "\<esc>\<right>v\<down>"
+
+" search
+	" search for word under cursor and copy to 's' register
+let search_map = ':set hls<cr>:let @/ = ''\<'' . expand(''<cword>'') . ''\>''<cr>:let @s = expand(''<cword>'')<cr>'
+
+call s:n_map('s', search_map)
+call s:ni_map('<c-s>', search_map)
+
+	" next/prev seatch result
+call s:ni_map('<a-s>', '/<cr>')
+call s:ni_map('<a-s-s>', '?<cr>')
+call s:nv_map('<cr>', '/<cr>')
+call s:nv_map('<backspace>', '?<cr>')
+
+" undo/redo
+call s:n_map('u', ':undo<cr>')
+call s:n_map('<a-u>', ':redo<cr>')
+call s:ni_map('<c-u>', ':undo<cr>')
+call s:ni_map('<c-a-u>', ':redo<cr>')
+
+" deletion
+inoremap <c-d> <right><esc>:call <sid>del_until('i')<cr>
 
 " indentation
 vnoremap <silent> <tab> >
 vnoremap <silent> <s-tab> <
 
 " folding
-nnoremap <silent> fo :0,$foldopen<cr>
-nnoremap <silent> fc :0,$foldclose<cr>
+call s:n_map('fo', ':0,$foldopen<cr>')
+call s:n_map('fc', ':0,$foldclose<cr>')
 
 """"
-"" window control
+"" window and tab control
 """""
-" movement
-call s:ni_silent_map('<c-pagedown>', ':wincmd w<cr>')
-call s:ni_silent_map('<c-j>', ':wincmd w<cr>')
-call s:ni_silent_map('<c-pageup>', ':wincmd W<cr>')
-call s:ni_silent_map('<c-k>', ':wincmd W<cr>')
+" movement between tabs
+call s:ni_map('<c-h>', ':tabprev<cr>')
+call s:ni_map('<c-l>', ':tabnext<cr>')
+
+" movement between splits
+call s:ni_map('<c-k>', ':wincmd w<cr>')	" up
+call s:ni_map('<c-j>', ':wincmd W<cr>')	" down
 
 " resize
-call s:ni_silent_map('<c-a-left>', '<c-w><')
-call s:ni_silent_map('<c-a-h>', '<c-w><')
-call s:ni_silent_map('<c-a-right>', '<c-w>>')
-call s:ni_silent_map('<c-a-l>', '<c-w>>')
-call s:ni_silent_map('<c-a-up>', '<c-w>-')
-call s:ni_silent_map('<c-a-j>', '<c-w>-')
-call s:ni_silent_map('<c-a-down>', '<c-w>+')
-call s:ni_silent_map('<c-a-k>', '<c-w>+')
+call s:ni_map('<c-a-h>', '<c-w><')
+call s:ni_map('<c-a-l>', '<c-w>>')
+call s:ni_map('<c-a-j>', '<c-w>+')
+call s:ni_map('<c-a-k>', '<c-w>-')
 
-""""
-"" tab control
-""""
-" open/close
+" open/close tab
+nmap o :tabnew
 nmap <c-o> :tabnew 
 imap <c-o> <esc>:tabnew 
-nmap <silent> <c-c> <esc>:q<cr>
-
-" movement
-call s:ni_silent_map('<c-home>', ':tabprev<cr>')
-call s:ni_silent_map('<c-h>', ':tabprev<cr>')
-call s:ni_silent_map('<c-end>', ':tabnext<cr>')
-call s:ni_silent_map('<c-l>', ':tabnext<cr>')
+call s:ni_map('<c-c>', ':q<cr>')
 "}}}
 
 """""""""""""""""
