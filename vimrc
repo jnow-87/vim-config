@@ -389,17 +389,10 @@ let vimgdb_inferior_show = 0
 
 """"
 "" snippet
-""""
+
+" XXX: file-type specific snippes are listed in ~/.vim/ftplugin/<filetype>
+
 let g:snippet_base = "~/.vim/snippets"
-
-inoremap <leader>titem	<esc>:call Snippet("itemize.tex")<cr>
-inoremap <leader>tenum	<esc>:call Snippet("enum.tex")<cr>
-inoremap <leader>tdesc	<esc>:call Snippet("description.tex")<cr>
-inoremap <leader>talign	<esc>:call Snippet("align.tex")<cr>
-inoremap <leader>ttab	<esc>:call Snippet("table.tex")<cr>
-inoremap <leader>tfig	<esc>:call Snippet("figure.tex")<cr>
-inoremap <leader>ttfig	<esc>:call Snippet("tabfigure.tex")<cr>
-
 "}}}
 
 """"""""""""
