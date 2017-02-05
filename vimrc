@@ -122,34 +122,6 @@ function s:nv_map(lhs, rhs)
 	call s:v_map(a:lhs, a:rhs)
 endfunction
 
-" delete line from cursor till user supplied charater
-function s:del_until(feedkey)
-	let l:sleeped = 800
-
-	" wait for user input
-	while l:sleeped > 0 && getchar(1) == 0
-		sleep 50m
-		let l:sleeped = l:sleeped - 50 
-	endwhile
-
-	" get user input
-	let c = nr2char(getchar(1))
-
-	" check user input
-	if c == '$'
-		" '$'
-		exec "normal! d$"
-
-	elseif c != ""
-		" default non-empty
-		exec "normal! dt" . nr2char(getchar(0))
-	endif
-
-	if a:feedkey != ""
-		call feedkeys(a:feedkey)
-	endif
-endfunction
-
 " brief	add command alias for 'exe'-mode commands
 function s:cabbrev(abbrev, expansion)
 	exec 'cabbr ' . a:abbrev . ' <c-r>=getcmdpos() == 1 && getcmdtype() == ":" ? "' . a:expansion . '" : "' . a:abbrev . '"<CR>'
@@ -569,9 +541,6 @@ call s:n_map('u', ':undo<cr>')
 call s:n_map('<a-u>', ':redo<cr>')
 call s:ni_map('<c-u>', ':undo<cr>')
 call s:ni_map('<c-a-u>', ':redo<cr>')
-
-" deletion
-inoremap <c-d> <right><esc>:call <sid>del_until('i')<cr>
 
 " indentation
 vnoremap <silent> <tab> >
