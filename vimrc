@@ -51,6 +51,7 @@ set noequalalways
 exec "set tags+=/tmp/" . getpid() . ".tags"
 
 let mapleader = '\'
+set fillchars=vert:\│
 "}}}
 
 """"
@@ -58,7 +59,7 @@ let mapleader = '\'
 """"
 "{{{
 " enable color column
-autocmd	FileType text setlocal colorcolumn=80
+autocmd	FileType text setlocal colorcolumn=80 | setlocal foldnestmax=2
 autocmd	FileType gitcommit setlocal colorcolumn=80 | setlocal tabstop=4
 
 " line wrap for vimdiff
@@ -206,6 +207,31 @@ function Foldtext()
 
 	return s_line . repeat(' ', winwidth(0) - foldtextlength - 8) . s_lines . "        "
 endfunction
+
+" return a string indicating the position within the current file
+" string characters are taken from nline_indicator
+function Nline_indicator()
+	let s = ""
+	let i = 0
+
+	" determine number of indicator elements to display
+	let x = s:nline_indicator_len * line('.') / line('$') + 1
+	
+	if x > s:nline_indicator_len
+		let x = s:nline_indicator_len
+	endif
+
+	" copy required number of elements to string
+	while i < x
+		let s .= s:nline_indicator[i]
+		let i += 1
+	endwhile
+
+	return s
+endfunction
+
+let s:nline_indicator = [ '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█' ]
+let s:nline_indicator_len = len(s:nline_indicator)
 "}}}
 
 """""""""""""""""""""""
@@ -225,7 +251,7 @@ highlight	Comment			ctermfg=27
 highlight	LineNr			ctermfg=88
 highlight	Search			ctermfg=0 ctermbg=1
 highlight	Pmenu			ctermfg=255 ctermbg=24
-highlight	PmenuSel		ctermfg=255 ctermbg=31
+highlight	PmenuSel		ctermfg=255 ctermbg=236
 highlight	SpellBad		ctermfg=7 ctermbg=88
 highlight	SpellCap		ctermfg=7 ctermbg=21
 highlight	SpellLocal		ctermfg=7 ctermbg=57
@@ -237,6 +263,7 @@ highlight	DiffText		ctermbg=1, ctermfg=15
 highlight	MatchParen		ctermbg=88
 highlight	ColorColumn		ctermbg=235
 highlight	SignColumn		ctermbg=0
+highlight	VertSplit		ctermbg=0 ctermfg=236 cterm=None
 highlight	Folded			ctermfg=242 ctermbg=234
 highlight	ExtraWhitespace	ctermbg=236
 highlight	clang_arg		ctermbg=33
@@ -336,7 +363,7 @@ let g:gtd_sym_list_kinds_java		= ['c', 'e', 'f', 'g', 'i', 'l', 'm', 'p']
 "{{{
 set laststatus=2
 
-let g:airline_theme = "papercolor"
+let g:airline_theme = "darkpapercolor"
 let g:airline_powerline_fonts = 1
 let g:airline_mode_map = {
 	\ '__' : '-',
@@ -354,14 +381,18 @@ let g:airline_mode_map = {
 
 let g:airline_symbol_crypt = "\u221e"
 let g:airline_symbol_ro = "\ue0a2"
-let g:airline_symbol_rw = "\u2261"
+let g:airline_symbol_rw = "✎"
+let g:airline_symbol_modified = "⚡"
+let g:airline_symbols = {}
+let g:airline_symbols.modified = " " . g:airline_symbol_modified
+
 
 let g:airline_section_a = "%4{airline#parts#mode()}"
 let g:airline_section_b = "%{(&readonly || !&modifiable ? g:airline_symbol_ro : g:airline_symbol_rw)}%{(exists('+key') && !empty(&key) ? '  ' . g:airline_symbol_crypt : '')}"
-let g:airline_section_c = "%<%f%m"
+let g:airline_section_c = "%<%f %{&modified ? g:airline_symbol_modified : ''}"
 let g:airline_section_x = "%{&filetype}"
 let g:airline_section_y = "%{&fileformat}%{(&fileencoding != '' ? '  ' . g:airline_right_alt_sep . ' ' : '')}%{&fileencoding}"
-let g:airline_section_z = "%7(%l,%c%)"
+let g:airline_section_z = "%7(%l,%c%) %-" . s:nline_indicator_len . "{Nline_indicator()}"
 let g:airline_section_warning = ""
 
 let g:airline_extensions = ['tabline']
