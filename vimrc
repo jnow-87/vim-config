@@ -295,20 +295,20 @@ let g:gtd_sym_menu = "» "
 " mappings
 call s:ni_map('<f9>', ':GtdSymWindowToggle<cr>')
 
-let g:gtd_key_def_split			= "lf"
-let g:gtd_key_def_tab			= "tf"
-let g:gtd_key_decl_split		= "lp"
-let g:gtd_key_decl_tab			= "tp"
+let g:gtd_key_def_split			= "fs"
+let g:gtd_key_def_tab			= "ft"
+let g:gtd_key_decl_split		= "ps"
+let g:gtd_key_decl_tab			= "pt"
 
-let g:gtd_key_def_split_glob	= "glf"
-let g:gtd_key_def_tab_glob		= "gtf"
-let g:gtd_key_decl_split_glob	= "glp"
-let g:gtd_key_decl_tab_glob		= "gtp"
+let g:gtd_key_def_split_glob	= "gfs"
+let g:gtd_key_def_tab_glob		= "gft"
+let g:gtd_key_decl_split_glob	= "gps"
+let g:gtd_key_decl_tab_glob		= "gpt"
 
-let g:gtd_key_head_list			= "lh"
-let g:gtd_key_head_focus		= "th"
+let g:gtd_key_head_list			= "hl"
+let g:gtd_key_head_focus		= "hf"
 
-let g:gtd_key_opt_menu			= "lm"
+let g:gtd_key_opt_menu			= "m"
 let g:gtd_key_sym_menu_loc		= "ls"
 
 " kinds of symbols to display in gtd window
