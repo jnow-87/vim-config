@@ -5,10 +5,10 @@ ab desc desription
 ab ð d
 ab ¢ c
 
-inoremap <buffer> <leader>itemize	<esc>:call Snippet("itemize.tex")<cr>
-inoremap <buffer> <leader>enum		<esc>:call Snippet("enum.tex")<cr>
-inoremap <buffer> <leader>desc		<esc>:call Snippet("description.tex")<cr>
-inoremap <buffer> <leader>align		<esc>:call Snippet("align.tex")<cr>
-inoremap <buffer> <leader>tab		<esc>:call Snippet("table.tex")<cr>
-inoremap <buffer> <leader>fig		<esc>:call Snippet("figure.tex")<cr>
-inoremap <buffer> <leader>tfig		<esc>:call Snippet("tabfigure.tex")<cr>
+call util#map#i('<leader>itemize', ':call Snippet("itemize.tex")<cr>', '<buffer>')
+call util#map#i('<leader>enum', ':call Snippet("enum.tex")<cr>', '<buffer>')
+call util#map#i('<leader>desc', ':call Snippet("description.tex")<cr>', '<buffer>')
+call util#map#i('<leader>align', ':call Snippet("align.tex")<cr>', '<buffer>')
+call util#map#i('<leader>tab', ':call Snippet("table.tex")<cr>', '<buffer>')
+call util#map#i('<leader>fig', ':call Snippet("figure.tex")<cr>', '<buffer>')
+call util#map#i('<leader>tfig', ':call Snippet("tabfigure.tex")<cr>', '<buffer>')
