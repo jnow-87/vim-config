@@ -443,10 +443,10 @@ let g:qdelete_map_delete_init = "<c-d>"
 "" fold
 """"
 "{{{
-let g:fold_map_create = '<c-f>'
-let g:fold_map_delete = '<c-a-f>'
-let g:fold_map_toggle = 'ff'
-let g:fold_map_toggle_all = 'gff'
+let g:fold_map_toggle_ni = '<c-f>'
+let g:fold_map_toggle_n = 'ff'
+let g:fold_map_open_all = 'fo'
+let g:fold_map_close_all = 'fc'
 "}}}
 
 """"
