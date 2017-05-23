@@ -646,10 +646,10 @@ call util#map#v('<s-right>', 'e', '')
 call util#map#v('<s-a-right>', '$', '')
 call util#map#v('<s-up>', '<up>', '')
 call util#map#v('<s-down>', '<down>', '')
-call util#map#i('<s-left>',		'getpos(".")[2] == 1 ? "\<esc>v" : "\<esc>\<right>v"', 'noescape noinsert <expr>')
-call util#map#i('<s-right>',	'getpos(".")[2] == 1 ? "\<esc>v" : "\<esc>\<right>v"', 'noescape noinsert <expr>')
-call util#map#i('<s-up>',		'getpos(".")[2] == 1 ? "\<esc>v" : "\<esc>\<right>v\<up>"', 'noescape noinsert <expr>')
-call util#map#i('<s-down>',		'getpos(".")[2] == 1 ? "\<esc>v" : "\<esc>\<right>v\<down>"', 'noescape noinsert <expr>')
+call util#map#i('<s-left>', 'v', 'noinsert')
+call util#map#i('<s-right>', 'v', 'noinsert')
+call util#map#i('<s-up>', 'v<up>', 'noinsert')
+call util#map#i('<s-down>',	'v<down>', 'noinsert')
 
 " search
 	" search for word under cursor and copy to 's' register
