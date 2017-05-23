@@ -17,6 +17,7 @@ nunmap <c-f11><c-f12><c-f13>
 "" options
 """"
 "{{{
+let &term='xterm-256color'
 runtime! debian.vim
 filetype plugin on
 syntax on
