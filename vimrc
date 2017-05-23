@@ -184,6 +184,10 @@ function Foldtext()
 	return s_line . repeat(' ', winwidth(0) - foldtextlength - 8) . s_lines . "        "
 endfunction
 
+
+let s:nline_indicator = [ '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█' ]
+let s:nline_indicator_len = len(s:nline_indicator)
+
 " return a string indicating the position within the current file
 " string characters are taken from nline_indicator
 function Nline_indicator()
@@ -206,8 +210,64 @@ function Nline_indicator()
 	return s
 endfunction
 
-let s:nline_indicator = [ '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█' ]
-let s:nline_indicator_len = len(s:nline_indicator)
+
+" search cache used by Search_index()
+let s:search_query = ""
+let s:search_total = ""
+let s:search_match = {}
+
+" return string indicating the total number of search pattern matches
+" and the index of the current match
+" if search highlighting is off the string is blank
+function! Search_index()
+	let query = @/
+    let total = 0
+	let winview = winsaveview()
+	let line = winview['lnum']
+	let col = winview['col'] + 1
+
+	" exit if
+	" 	search highlight is not enabled or
+	" 	file is too long
+	if(&hls == 0 || line('$') > 100000)
+		return ''
+	endif
+
+	" update search cache if the search pattern has changed
+	if(query != s:search_query)
+		let s:search_match = {}
+
+		" get first match in buffer
+		call cursor(1, 1)
+		let [match_line, match_col] = searchpos(query, 'Wc')
+
+		" iterate through matches
+		while match_line
+			let total += 1
+			let s:search_match[match_line . ',' . match_col] = total
+
+			" get next search result
+			let [match_line, match_col] = searchpos(query, 'W')
+		endwhile
+
+		let s:search_total = total
+		let s:search_query = query
+
+		" restore window view
+		call winrestview(winview)
+	endif
+
+	" get data from search cache
+	let total = s:search_total
+	let exact = '-'
+
+	if(has_key(s:search_match, line . ',' . col))
+		let exact = s:search_match[line . ',' . col]
+	endif
+
+	" return string
+    return exact . '/' . total . '  '
+endfunction
 "}}}
 
 """""""""""""""""""""""
@@ -484,7 +544,7 @@ let g:airline_section_b = "%{(&readonly || !&modifiable ? g:airline_symbol_ro : 
 let g:airline_section_c = "%<%f %{&modified ? g:airline_symbol_modified : ''}"
 let g:airline_section_x = "%{&filetype}"
 let g:airline_section_y = "%{&fileformat}%{(&fileencoding != '' ? '  ' . g:airline_right_alt_sep . ' ' : '')}%{&fileencoding}"
-let g:airline_section_z = "%7(%l,%c%) %-" . s:nline_indicator_len . "{Nline_indicator()}"
+let g:airline_section_z = "%{Search_index()}%7(%l,%c%) %-" . s:nline_indicator_len . "{Nline_indicator()}"
 let g:airline_section_warning = ""
 
 let g:airline_extensions = ['tabline']
