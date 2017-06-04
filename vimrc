@@ -212,10 +212,8 @@ function Nline_indicator()
 endfunction
 
 
-" search cache used by Search_index()
-let s:search_query = ""
-let s:search_total = ""
-let s:search_match = {}
+" search cache used by Search_index(), per buffer
+autocmd BufRead * let b:search_query = "" | let b:search_total = "" | let b:search_match = {}
 
 " return string indicating the total number of search pattern matches
 " and the index of the current match
@@ -235,8 +233,8 @@ function! Search_index()
 	endif
 
 	" update search cache if the search pattern has changed
-	if(query != s:search_query)
-		let s:search_match = {}
+	if(query != b:search_query)
+		let b:search_match = {}
 
 		" get first match in buffer
 		call cursor(1, 1)
@@ -245,25 +243,25 @@ function! Search_index()
 		" iterate through matches
 		while match_line
 			let total += 1
-			let s:search_match[match_line . ',' . match_col] = total
+			let b:search_match[match_line . ',' . match_col] = total
 
 			" get next search result
 			let [match_line, match_col] = searchpos(query, 'W')
 		endwhile
 
-		let s:search_total = total
-		let s:search_query = query
+		let b:search_total = total
+		let b:search_query = query
 
 		" restore window view
 		call winrestview(winview)
 	endif
 
 	" get data from search cache
-	let total = s:search_total
+	let total = b:search_total
 	let exact = '-'
 
-	if(has_key(s:search_match, line . ',' . col))
-		let exact = s:search_match[line . ',' . col]
+	if(has_key(b:search_match, line . ',' . col))
+		let exact = b:search_match[line . ',' . col]
 	endif
 
 	" return string
