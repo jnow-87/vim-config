@@ -583,14 +583,14 @@ exec "set <s-f4>=\e[1;2S"
 "" spell checking and highlighting
 """"
 " toggle spell checking and move between bad words
-call util#map#ni('<f11>', ':call ' . s:sid . 'spell_ctrl("b")<cr>', '')
-call util#map#ni('<f12>', ':call ' . s:sid . 'spell_ctrl("f")<cr>', '')
+call util#map#ni('<f6>', ':call ' . s:sid . 'spell_ctrl("b")<cr>', '')
+call util#map#ni('<f7>', ':call ' . s:sid . 'spell_ctrl("f")<cr>', '')
 
 " disable spell checking
-call util#map#ni('<a-f11>', ':set spell!<cr>', '')
+call util#map#ni('<a-f6>', ':set spell!<cr>', '')
 
 " add word under cursor to spellfile
-call util#map#ni('<a-f12>', 'zg', '')
+call util#map#ni('<a-f7>', 'zg', '')
 
 """"
 "" vim settings
@@ -598,17 +598,17 @@ call util#map#ni('<a-f12>', 'zg', '')
 " syntax highlighting debug
 call util#map#ni('<f1>', ':call ' . s:sid . 'syn_stack()<cr>', '')
 
-" toggle line numbers
-call util#map#ni('<f2>', ':set nu!<cr>', '')
-
-" toggle 'list' mode
-call util#map#ni('<f3>', ':set list!<cr>', '')
-
 " toggle 'paste'
-call util#map#ni('<f4>', ':set paste!<cr>', '')
+call util#map#ni('<f2>', ':set paste!<cr>', '')
 
 " toggle search highlighting
 call util#map#ni('<f10>', ':set hls!<cr>', '')
+
+" toggle line numbers
+call util#map#ni('<f11>', ':set nu!<cr>', '')
+
+" toggle 'list' mode
+call util#map#ni('<f12>', ':set list!<cr>', '')
 
 """"
 "" buffer operations
