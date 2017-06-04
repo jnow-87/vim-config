@@ -213,7 +213,7 @@ endfunction
 
 
 " search cache used by Search_index(), per buffer
-autocmd BufRead * let b:search_query = "" | let b:search_total = "" | let b:search_match = {}
+autocmd BufWinEnter * let b:search_query = "" | let b:search_total = "" | let b:search_match = {}
 
 " return string indicating the total number of search pattern matches
 " and the index of the current match
