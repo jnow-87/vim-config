@@ -486,7 +486,7 @@ call util#map#ni('<f8>', ':ScratchToggle<cr>', '')
 let g:fastcp_map_timeout = 400
 let g:fastcp_map_copy = 'y'
 let g:fastcp_map_cut = 'x'
-let g:fastcp_map_paste_front = 'P'
+let g:fastcp_map_paste_front = '<a-p>'
 let g:fastcp_map_paste_back = 'p'
 let g:fastcp_map_paste_i = '<c-v>'
 "}}}
