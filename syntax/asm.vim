@@ -31,7 +31,7 @@ syntax keyword	asmCode				lis mullw mtspr mfspr mtsrr mtmsr lwarx stwcx bne sync
 syntax keyword	asmCode				add adc adiw sub subi sbc sbci and andi or ori eor com neg sbr cbr inc dec tst clr ser mul mus musu fmul fmuls fmuls des rjmp ijmp eijmp jmp rcall icall eicall call ret reti cpse cp cpc cpi sbrc sbrs sbic sbis brbs brbc breq brne brcs brcc brsh brlo brm brpl brge brlt brhs brhc brt brtc brvs brvc brie brid mov movw ldi lds ld ldd sts st std lpm elpm spm in out push pop xch las lac lat lsl lsr rol ror ast swap bset bclr sbi cbi bst bld sec clc sen cln sez clz sei cli ses cls sev clv set clt seh clh break nop sleep wdr
 
 " TODO
-syntax keyword	cTodo				TODO FIXME XXX contained
+syntax keyword	cTodo				TODO FIXME XXX NOTE contained
 
 " C preprocessor
 syntax region	cPreProc			display matchgroup=cPreProc start="^\s*\(%:\|#\)\s*include" end="$" end="//"me=s-1 end="/\*"me=s-1 transparent contains=None,cPreProc
@@ -49,6 +49,6 @@ syntax region	cPreProcIf0			start="^\s*\(%:\|#\)\s*if\s*0" end="^\s*\(%:\|#\)\s*
 hi def link asmCode					mblue
 hi def link asmComment				mgreen
 hi def link asmDirective			mblue
-hi def link cPreProc				mblue
-hi def link cPreProcIf				mblue
+hi def link cPreProc				PreProc
+hi def link cPreProcIf				PreProc
 hi def link cInclude				mblue

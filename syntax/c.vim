@@ -32,13 +32,13 @@ syntax cluster	cAll				contains=cKeyword,cBlock,cString,cComment,cUserLabel,asmB
 
 " keywords
 syntax keyword	cKeyword			static register auto extern const inline restrict volatile __volatile__
-syntax keyword	cKeyword			goto break return continue case default if else switch while for do
+syntax keyword	cKeyword			goto goto_errno break return return_errno continue case default if else switch while for do
 syntax keyword	cKeyword			asm __asm__ contained
 syntax keyword	cKeyword			sizeof typeof attribute __attribute__ 
 syntax keyword	cKeyword			true false 
 syntax keyword	cKeyword			struct union enum typedef
 syntax keyword	cKeyword			int long short char void signed unsigned float double size_t ssize_t time_t va_list bool int8_t int16_t int32_t int64_t uint8_t uint16_t uint32_t uint64_t addr_t register_t intmax_t uintmax_t ptrdiff_t sptrdiff_t FILE
-syntax keyword	cTodo				TODO FIXME XXX contained
+syntax keyword	cTodo				TODO FIXME XXX NOTE contained
 
 " {}-block
 if g:syntax_c_fold == 1 && b:syntax_c_fold == 1
@@ -48,6 +48,7 @@ syntax region	cBlock				start="{" end="}" transparent
 endif
 
 " string
+syntax match	cString				"'.'"
 syntax region	cString				start=+L\="+ skip=+\\\\\|\\"+ end=+"+ contains=@Spell
 
 " comments
@@ -103,9 +104,8 @@ syntax match	asmArgValue			"([^)]*)" contained contains=cKeyword
 " colors
 hi def link cComment				mgreen
 hi def link cUserLabel				mblue
-hi def link cPreProc				mblue
-hi def link cPreProcS				mblue
-hi def link cPreProcIf0				mblue
+hi def link cPreProc				PreProc
+hi def link cPreProcIf0				PreProc
 hi def link cKeyword				mblue
 hi def link cString					mdefit
 hi def link cTodo					Todo

@@ -279,6 +279,7 @@ highlight	mdefit			cterm=italic
 highlight	mred			ctermfg=124
 highlight	mlblue			ctermfg=6
 highlight	mblue			ctermfg=27
+highlight	PreProc			ctermfg=24
 highlight	mgreen			ctermfg=28
 highlight	morange			ctermfg=202
 highlight	mpurple			ctermfg=56
