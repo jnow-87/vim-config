@@ -534,7 +534,7 @@ let g:airline_mode_map = {
 let g:airline_symbol_crypt = "\u221e"
 let g:airline_symbol_ro = "\ue0a2"
 let g:airline_symbol_rw = "✎"
-let g:airline_symbol_modified = "⚡"
+let g:airline_symbol_modified = "☢"
 let g:airline_symbols = {}
 let g:airline_symbols.modified = " " . g:airline_symbol_modified
 
