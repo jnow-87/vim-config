@@ -22,7 +22,7 @@ runtime! debian.vim
 filetype plugin on
 syntax on
 set nocp
-set viminfo+=n/tmp/viminfo
+set viminfo+=n/tmp/viminfo.$USER
 set showcmd
 set ignorecase
 set smartcase
@@ -35,6 +35,7 @@ set ai
 set noexpandtab
 set tabstop=4
 set shiftwidth=4
+set backspace=indent,eol,start
 set complete=.,w,b,u,t,i
 "set complete+=kspell
 set completeopt=menu,longest
@@ -71,13 +72,13 @@ autocmd	FileType gitcommit setlocal colorcolumn=80 | setlocal tabstop=4
 autocmd	VimEnter * if &diff | execute 'windo set wrap' | endif
 
 " add filetype extensions
-autocmd	BufRead,BufNewFile *.lds			setf ld
-autocmd	BufRead,BufNewFile *.gperf			setf gperf
-autocmd	BufRead,BufNewFile *.per			setf per
-autocmd	BufRead,BufNewFile pconfig,Pconfig	setf kconfig
+autocmd	BufRead,BufNewFile *.lds			setfiletype ld
+autocmd	BufRead,BufNewFile *.gperf			setfiletype gperf
+autocmd	BufRead,BufNewFile *.per			setfiletype per
+autocmd	BufRead,BufNewFile pconfig,Pconfig	setfiletype kconfig
 
 " default filetype to text
-autocmd	BufRead * if &filetype == "" | setfiletype text | endif
+autocmd	BufRead,BufNewFile *				setfiletype text
 
 " window dimensions
 autocmd	VimEnter	* :call s:win_dimensions()
@@ -634,6 +635,12 @@ call util#map#n('tt', '<c-]>', '')
 call util#map#n('gtt', 'g<c-]>', '')
 call util#map#n('<a-t>', '<c-t>', '')
 
+	" goto next diff
+if &diff
+	call util#map#n('<cr>', ']c', '')
+	call util#map#n('<backspace>', '[c', '')
+endif
+
 " text selection
 call util#map#n('<s-left>', 'v', '')
 call util#map#n('<s-right>', 'v', '')
@@ -660,8 +667,11 @@ call util#map#ni('<c-s>', search_map, '')
 	" next/prev seatch result
 call util#map#ni('<a-s>', '/<cr>', '')
 call util#map#ni('<a-s-s>', '?<cr>', '')
-call util#map#nv('<cr>', '/<cr>', '')
-call util#map#nv('<backspace>', '?<cr>', '')
+
+if !&diff
+	call util#map#nv('<cr>', '/<cr>', '')
+	call util#map#nv('<backspace>', '?<cr>', '')
+endif
 
 " undo/redo
 call util#map#n('u', ':undo<cr>', '')
