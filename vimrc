@@ -581,6 +581,9 @@ exec "set <s-f2>=\e[1;2Q"
 exec "set <s-f3>=\e[1;2R"
 exec "set <s-f4>=\e[1;2S"
 
+" map <c-backspace> to <f13> the given keycode is set within ~/.Xresources
+exec "set <f13>=\e[25;6~"
+
 """"
 "" spell checking and highlighting
 """"
@@ -615,6 +618,10 @@ call util#map#ni('<f12>', ':set list!<cr>', '')
 """"
 "" buffer operations
 """"
+" content modification
+	" delete word backward
+call util#map#i('<f13>', '<c-w>', 'noescape noinsert')
+
 " movement
 	" goto line x
 call util#map#n('l', "':' . input(\"\") . '<cr>'", '<expr> nosilent')
