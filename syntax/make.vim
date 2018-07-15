@@ -76,7 +76,7 @@ elseif !exists("make_no_comments")
    syn region  makeComment	start="#" end="^$" end="[^\\]$" keepend contains=@Spell,makeTodo
    syn match   makeComment	"#$" contains=@Spell
 endif
-syn keyword makeTodo TODO FIXME XXX contained
+syn keyword makeTodo TODO FIXME NOTE XXX contained
 
 " match escaped quotes and any other escaped character
 " except for $, as a backslash in front of a $ does
