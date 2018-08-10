@@ -78,8 +78,8 @@ autocmd	BufRead,BufNewFile *.per			setfiletype per
 autocmd	BufRead,BufNewFile pconfig,Pconfig	setfiletype kconfig
 
 " default filetype to text
-autocmd	BufRead,BufNewFile *				setfiletype text
 autocmd BufRead,BufNewFile *.cmm	set filetype=cmm
+autocmd	BufRead,BufNewFile *		if &filetype == '' | setfiletype text | endif
 
 " window dimensions
 autocmd	VimEnter	* :call s:win_dimensions()
@@ -622,6 +622,7 @@ call util#map#ni('<f12>', ':set list!<cr>', '')
 " content modification
 	" delete word backward
 call util#map#i('<f13>', '<c-w>', 'noescape noinsert')
+cnoremap <f13>	<c-w>
 
 " movement
 	" goto line x
