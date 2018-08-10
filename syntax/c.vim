@@ -64,12 +64,12 @@ endif
 syntax match	cUserLabel			display "^\zs[^ \/\t\:\"\']\+\s*\:\ze[^\:]*$"
 
 " preprocessor
-syntax region	cPreProc			display matchgroup=cPreProc start="^\s*\(%:\|#\)\s*include" end="$" end="//"me=s-1 end="/\*"me=s-1 transparent contains=None,cPreProc
+syntax region	cPreProc			display matchgroup=cPreProc start="^\s*\(%:\|#\)\s*include" end="$" end="//"me=s-1 transparent contains=None,cPreProc,cComment
 
 if g:syntax_c_fold == 1 && b:syntax_c_fold == 1
-syntax region	cPreProc			start="^\s*\(%:\|#\)\s*\(define\|undef\)\>"	skip="\\$" end="$" end="//"me=s-1 end="/\*"me=s-1 keepend fold
+syntax region	cPreProc			start="^\s*\(%:\|#\)\s*\(define\|undef\)\>"	skip="\\$" end="$" end="//"me=s-1 keepend fold contains=cComment
 else
-syntax region	cPreProc			start="^\s*\(%:\|#\)\s*\(define\|undef\)\>"	skip="\\$" end="$" end="//"me=s-1 end="/\*"me=s-1 keepend
+syntax region	cPreProc			start="^\s*\(%:\|#\)\s*\(define\|undef\)\>"	skip="\\$" end="$" end="//"me=s-1 keepend contains=cComment
 endif
 
 syntax region	cPreProc			start="^\s*\(%:\|#\)\s*\(pragma\|line\|warning\|warn\|error\)" skip="\\$" end="$" keepend
