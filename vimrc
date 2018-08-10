@@ -79,6 +79,7 @@ autocmd	BufRead,BufNewFile pconfig,Pconfig	setfiletype kconfig
 
 " default filetype to text
 autocmd	BufRead,BufNewFile *				setfiletype text
+autocmd BufRead,BufNewFile *.cmm	set filetype=cmm
 
 " window dimensions
 autocmd	VimEnter	* :call s:win_dimensions()
