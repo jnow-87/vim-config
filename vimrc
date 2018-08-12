@@ -213,10 +213,6 @@ function Nline_indicator()
 	return s
 endfunction
 
-
-" search cache used by Search_index(), per buffer
-autocmd BufWinEnter * let b:search_query = "" | let b:search_total = "" | let b:search_match = {}
-
 " return string indicating the total number of search pattern matches
 " and the index of the current match
 " if search highlighting is off the string is blank
@@ -233,6 +229,11 @@ function! Search_index()
 	if(&hls == 0 || line('$') > 100000)
 		return ''
 	endif
+
+	" get existing search cache or initialise it
+	let b:search_query = get(b:, 'search_query', "")
+	let b:search_total = get(b:, 'search_total', "")
+	let b:search_match = get(b:, 'search_match', {})
 
 	" update search cache if the search pattern has changed
 	if(query != b:search_query)
