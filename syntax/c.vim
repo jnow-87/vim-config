@@ -53,11 +53,12 @@ syntax region	cString				start=+L\="+ skip=+\\\\\|\\"+ end=+"+ contains=@Spell
 
 " comments
 syntax region	cComment			start="//" skip="\\$" end="$" keepend contains=cTodo,@Spell
+syntax match	cCommentHeading		" \(macros\|types\|prototypes\|local\/static prototypes\|\(external\|global\|static\) variables\|\(global\|local\) functions\) "
 
 if g:syntax_c_fold_comment == 1 && b:syntax_c_fold_comment == 1
-syntax region	cComment			matchgroup=cComment start="/\*" end="\*/" contains=cTodo,@Spell fold
+syntax region	cComment			matchgroup=cComment start="/\*" end="\*/" contains=cTodo,@Spell,cCommentHeading fold
 else
-syntax region	cComment			matchgroup=cComment start="/\*" end="\*/" contains=cTodo,@Spell
+syntax region	cComment			matchgroup=cComment start="/\*" end="\*/" contains=cTodo,@Spell,cCommentHeading
 endif
 
 " labels
@@ -103,6 +104,7 @@ syntax match	asmArgValue			"([^)]*)" contained contains=cKeyword
 
 " colors
 hi def link cComment				mgreen
+hi def link cCommentHeading			mgreenHeading
 hi def link cUserLabel				mblue
 hi def link cPreProc				PreProc
 hi def link cPreProcIf0				PreProc
