@@ -38,7 +38,7 @@ set shiftwidth=4
 set backspace=indent,eol,start
 set complete=.,w,b,u,t,i
 "set complete+=kspell
-set completeopt=menu,longest
+set completeopt=menuone,longest,noselect
 set pumheight=10
 set conceallevel=3
 set concealcursor=vinc
@@ -78,8 +78,8 @@ autocmd	BufRead,BufNewFile *.per			setfiletype per
 autocmd	BufRead,BufNewFile pconfig,Pconfig	setfiletype kconfig
 
 " default filetype to text
-autocmd BufRead,BufNewFile *.cmm	set filetype=cmm
-autocmd	BufRead,BufNewFile *		if &filetype == '' | setfiletype text | endif
+autocmd BufRead,BufNewFile *.cmm			set filetype=cmm
+autocmd	BufRead,BufNewFile *				if &filetype == '' | setfiletype text | endif
 
 " window dimensions
 autocmd	VimEnter	* :call s:win_dimensions()
@@ -309,7 +309,7 @@ highlight	ExtraWhitespace	ctermbg=236
 highlight	clang_arg		ctermbg=33
 
 " match extra whitespaces
-autocmd	FileType c,cpp,asm,text match ExtraWhitespace	"\( \+$\)\|\(^\zs \+\ze[^ \*]\+\)\|\([^\t]\+\zs\t\+\ze$\)"
+autocmd	FileType c,cpp,asm match ExtraWhitespace	"\( \+$\)\|\(^\zs \+\ze[^ \*]\+\)\|\([^\t]\+\zs\t\+\ze$\)"
 
 " config
 let g:syntax_c_fold_comment = 0
@@ -327,12 +327,12 @@ let lex_uses_cpp = 1
 """"
 "{{{
 "let g:clang_complete_loaded = 0
-let g:clang_library_path = "/usr/lib/llvm-3.7/lib"
+let g:clang_library_path = "/usr/lib/llvm-6.0/lib"
 let g:clang_use_library = 1
 
 let g:clang_complete_auto = 1
 let g:clang_complete_fallback = 1
-let g:clang_auto_select = 1
+let g:clang_auto_select = 0
 let g:clang_complete_macros = 1
 let g:clang_complete_copen = 0
 let g:clang_sort_algo = "alpha"
