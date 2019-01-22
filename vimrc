@@ -284,7 +284,7 @@ highlight	mlblue			ctermfg=6
 highlight	mblue			ctermfg=27
 highlight	PreProc			ctermfg=24
 highlight	mgreen			ctermfg=22
-highlight	mgreenHeading	ctermfg=22 cterm=italic
+highlight	mgreenHeading	ctermfg=29
 highlight	morange			ctermfg=202
 highlight	mpurple			ctermfg=56
 highlight	Comment			ctermfg=27
@@ -296,7 +296,7 @@ highlight	SpellBad		ctermfg=7 ctermbg=88
 highlight	SpellCap		ctermfg=7 ctermbg=21
 highlight	SpellLocal		ctermfg=7 ctermbg=57
 highlight	Visual			ctermfg=7 ctermbg=237
-highlight	DiffAdd			ctermbg=22
+highlight	DiffAdd			ctermbg=28
 highlight	DiffChange		ctermbg=33
 highlight	DiffDelete		ctermbg=88
 highlight	DiffText		ctermbg=1, ctermfg=15
