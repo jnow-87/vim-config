@@ -452,7 +452,7 @@ let g:comment_map_sexy = "cs"
 "" make
 """"
 "{{{
-let g:make_win_title = "make"
+let g:make_win_title = "make-log"
 let g:make_win_height = 7
 let g:make_key_select = "<cr>"
 
