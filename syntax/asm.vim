@@ -15,7 +15,7 @@ syntax sync ccomment cComment minlines=50
 syntax cluster	asmAll				contains=asmComment,asmDirective,asmCode,cPreProc,cPreProcBlock,cPreProcIf0
 
 " comments
-syntax match	asmComment			"\(//\|[#;]\).*" contains=cTODO
+syntax match	asmComment			"\(//\|[;]\).*" contains=cTODO
 syntax region	asmComment			start="/\*" end="\*/" contains=cTODO
 
 " . directives

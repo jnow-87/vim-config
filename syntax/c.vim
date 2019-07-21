@@ -97,9 +97,9 @@ syntax region	asmBlock			start="asm\s*[\(volatile\|goto\)]*\s*" end=")" contains
 syntax region	asmTemplate			start='"' end='"' skip='\\"' contained contains=asmArgRef,@asmCode
 syntax region	asmArgs				start="\s*:\s*" end=");"me=e-2 contained contains=asmArgRefName,asmArgString,asmArgValue,cComment transparent
 syntax match	asmArgRef			"%\d*" contained
-syntax match	asmArgRef			"%[\[{][a-zA-Z0-9_]*[\]}]" contained
+syntax match	asmArgRef			"%[a-z]\{0,1}[\[{][a-zA-Z0-9_]*[\]}]" contained
 syntax match	asmArgRefName		"\[[a-zA-Z0-9_]*\]" contained
-syntax match	asmArgString		'"\([ib]\|=m\|=\?r\d*\|cr\d*\|memory\|cc\)"' contained
+syntax match	asmArgString		'"\([ib]\|=m\|=\?r\d*\|cr\d*\|memory\|cc\|[a-z]\)"' contained
 syntax match	asmArgValue			"([^)]*)" contained contains=cKeyword
 
 " colors
@@ -111,6 +111,6 @@ hi def link cPreProcIf0				PreProc
 hi def link cKeyword				mblue
 hi def link cString					mdefit
 hi def link cTodo					Todo
-hi def link asmArgString			mlblue
+hi def link asmArgString			mpurple
 hi def link asmArgRef				mlblue
 hi def link asmArgRefName			mlblue
