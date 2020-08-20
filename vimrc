@@ -48,7 +48,7 @@ set tabpagemax=100
 set dir=/tmp
 set path=.,/usr/include,/usr/include/linux
 set updatetime=1000
-"set wildmode=longest,full
+set wildmode=list:longest
 set foldtext=Foldtext()
 set splitright
 set splitbelow
@@ -76,6 +76,7 @@ autocmd	BufRead,BufNewFile *.lds			setfiletype ld
 autocmd	BufRead,BufNewFile *.gperf			setfiletype gperf
 autocmd	BufRead,BufNewFile *.per			setfiletype per
 autocmd	BufRead,BufNewFile pconfig,Pconfig	setfiletype kconfig
+autocmd	BufRead,BufNewFile *.make			setfiletype make
 
 " default filetype to text
 autocmd BufRead,BufNewFile *.cmm			set filetype=cmm
@@ -474,6 +475,14 @@ call util#map#ni('<c-a-w>', ':MakeCycle w p<cr>', '')
 
 highlight	make_header		ctermfg=27
 highlight	make_select		ctermfg=255 ctermbg=24
+"}}}
+
+""""
+"" gcovered
+""""
+"{{{
+let g:gcovered_toggle = "cc"
+let g:gcovered_update = "cu"
 "}}}
 
 """"
