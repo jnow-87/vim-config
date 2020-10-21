@@ -288,6 +288,8 @@ highlight	mgreen			ctermfg=22
 highlight	mgreenHeading	ctermfg=29
 highlight	morange			ctermfg=202
 highlight	mpurple			ctermfg=56
+highlight	Error			ctermfg=255 ctermbg=88
+highlight	ErrorMsg		ctermfg=255 ctermbg=88
 highlight	Comment			ctermfg=27
 highlight	LineNr			ctermfg=88
 highlight	Search			ctermfg=0 ctermbg=1
