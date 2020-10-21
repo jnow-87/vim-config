@@ -99,7 +99,7 @@ syntax region	asmArgs				start="\s*:\s*" end=");"me=e-2 contained contains=asmAr
 syntax match	asmArgRef			"%\d*" contained
 syntax match	asmArgRef			"%[a-z]\{0,1}[\[{][a-zA-Z0-9_]*[\]}]" contained
 syntax match	asmArgRefName		"\[[a-zA-Z0-9_]*\]" contained
-syntax match	asmArgString		'"\([ib]\|=m\|=\?r\d*\|cr\d*\|memory\|cc\|[a-z]\)"' contained
+syntax match	asmArgString		'"\([ib]\|=m\|[+=]\?r\d*\|cr\d*\|memory\|cc\|[a-z]\)"' contained
 syntax match	asmArgValue			"([^)]*)" contained contains=cKeyword
 
 " colors
