@@ -7,7 +7,7 @@ setlocal foldmethod=syntax
 
 syn cluster dts_all contains=dts_block,dts_sec,dts_key,dts_string,dts_identifier,dts_comment
 
-syn keyword dts_sec memory driver
+syn keyword dts_sec memory devices
 
 syn keyword dts_key	reg baseaddr compatible size contained
 syn keyword dts_key int nextgroup=dts_width contained
