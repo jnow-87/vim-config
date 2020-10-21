@@ -63,9 +63,8 @@ syn region	yaccCCode			matchgroup=yaccCurly start="^%{" start="{" matchgroup=yac
 "  Yacc Definition Section Rules: {{{1
 syn	match	yaccType			"<[a-zA-Z_][a-zA-Z0-9_]*>" contains=yaccBrkt contained
 syn	match	yaccBrkt			"[<>]" contained
-syn	match	yaccSection			"^%\(union\|initial-action\|parse-param\|lex-param\|code\s*\(top\|requires\|provides\)*\|\)\ze\s*{" skipwhite skipnl nextgroup=yaccCCode contained
+syn	match	yaccSection			"^%\(union\|initial-action\|parse-param\|lex-param\|destructor\|code\s*\(top\|requires\|provides\)*\|\)\ze\s*{" skipwhite skipnl nextgroup=yaccCCode contained
 syn	match	yaccKey				"^\s*%\(left\|right\|start\|ident\|nonassoc\|locations\|api\.pure\|pure-parser\|error-verbose\|prec\|expect\|glr-parser\)\>" contained
-syn region	yaccDestructor		matchgroup=yaccSection start="%destructor" matchgroup=yaccSection end="destructor" skipwhite skipnl contains=yaccCCode contained
 syn keyword	yaccKey				yyerrok yyclearin contained
 syn	match	yaccKey				"^\s*%\(token\|type\)" nextgroup=yaccType skipwhite contained
 syn	match	yaccDefine			'^%define\s\+.*$' contained
