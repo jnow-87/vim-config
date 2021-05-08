@@ -9,7 +9,7 @@ syn cluster dts_all contains=dts_block,dts_sec,dts_key,dts_string,dts_identifier
 
 syn keyword dts_sec memory devices
 
-syn keyword dts_key	reg baseaddr compatible size contained
+syn keyword dts_key	reg baseaddr compatible size string contained
 syn keyword dts_key int nextgroup=dts_width contained
 
 syn region dts_block start="{" end="}" fold transparent contains=@dts_all
