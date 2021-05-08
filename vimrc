@@ -549,10 +549,12 @@ let g:airline_mode_map = {
 let g:airline_symbol_crypt = "\u221e"
 let g:airline_symbol_ro = "\ue0a2"
 let g:airline_symbol_rw = "✎"
-let g:airline_symbol_modified = "☢"
+let g:airline_symbol_modified = "✎"
+let g:airline_symbol_truncat = "‥"
+let g:airline_symbol_unnamed = "⁇"
+
 let g:airline_symbols = {}
 let g:airline_symbols.modified = " " . g:airline_symbol_modified
-
 
 let g:airline_section_a = "%4{airline#parts#mode()}"
 let g:airline_section_b = "%{(&readonly || !&modifiable ? g:airline_symbol_ro : g:airline_symbol_rw)}%{(exists('+key') && !empty(&key) ? '  ' . g:airline_symbol_crypt : '')}"
@@ -567,13 +569,18 @@ let g:airline#extensions#default#section_truncate_width = {
 	\ 'x' : 60,
 	\ 'y' : 88,
 \ }
-let g:airline#extensions#tabline#enabled = 0
+let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_splits = 0
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#show_tabs = 1
 let g:airline#extensions#tabline#show_tab_nr = 0
-let g:airline#extensions#tabline#tab_min_count = 2
+let g:airline#extensions#tabline#tab_min_count = 1
 let g:airline#extensions#tabline#show_close_button = 0
+let g:airline#extensions#tabline#formatter = "custom"
+let g:airline#extensions#tabline#formatter#custom#truncat_len = 3
+let g:airline#extensions#tabline#formatter#custom#truncat_sym = g:airline_symbol_truncat
+let g:airline#extensions#tabline#formatter#cutomst#unnamed = g:airline_symbol_unnamed
+
 "}}}
 
 """"
