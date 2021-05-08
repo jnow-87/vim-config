@@ -561,7 +561,7 @@ let g:airline_section_b = "%{(&readonly || !&modifiable ? g:airline_symbol_ro : 
 let g:airline_section_c = "%<%f %{&modified ? g:airline_symbol_modified : ''}"
 let g:airline_section_x = "%{&filetype}"
 let g:airline_section_y = "%{&fileformat}%{(&fileencoding != '' ? '  ' . g:airline_right_alt_sep . ' ' : '')}%{&fileencoding}"
-let g:airline_section_z = "%{Search_index()}%7(%l,%c%) %-" . s:nline_indicator_len . "{Nline_indicator()}"
+let g:airline_section_z = "%{Search_index()}%7(%l,%v%) %-" . s:nline_indicator_len . "{Nline_indicator()}"
 let g:airline_section_warning = ""
 
 let g:airline_extensions = ['tabline']
