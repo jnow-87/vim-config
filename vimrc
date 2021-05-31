@@ -741,13 +741,14 @@ call util#map#ni('<c-c>', ':q<cr>', '')
 "{{{
 " commands
 call s:cabbrev("make", "Make")
+call s:cabbrev("gfe", "Search -e build -e recent -e .git")
 
 " typos
-call s:cabbrev('W', 'w')
-call s:cabbrev('Q', 'q')
+call s:cabbrev("W", "w")
+call s:cabbrev("Q", "q")
 
 " hex editor
-call s:cabbrev('hex', '%!xxd')
+call s:cabbrev("hex", "%!xxd")
 "}}}
 
 """"""""""""
