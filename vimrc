@@ -404,13 +404,16 @@ let g:gtd_map_head_list			= "hl"
 let g:gtd_map_head_focus		= "hf"
 
 let g:gtd_map_opt_menu			= "m"
-let g:gtd_map_sym_menu_loc		= "ls"
+let g:gtd_map_sym_menu_all		= "ls"
+let g:gtd_map_sym_menu_func		= "lf"
 
 let g:gtd_map_quit				= "q"
 let g:gtd_map_expand			= "e"
 let g:gtd_map_select			= "<cr>"
 let g:gtd_map_update_win		= "u"
 let g:gtd_map_update_sym		= "U"
+
+let g:gtd_sym_window_close_on_select = 1
 
 " kinds of symbols to display in gtd window
 let g:gtd_sym_window_kinds_c		= ['c', 'd', 'f', 'g', 's', 't', 'u', 'v', 'x']
