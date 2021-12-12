@@ -54,8 +54,6 @@ set splitright
 set splitbelow
 set noequalalways
 
-exec "set tags+=/tmp/" . getpid() . ".tags"
-
 let mapleader = '\'
 set fillchars=vert:\│
 "}}}
@@ -85,9 +83,6 @@ autocmd	BufRead,BufNewFile *				if &filetype == '' | setfiletype text | endif
 " window dimensions
 autocmd	VimEnter	* :call s:win_dimensions()
 autocmd	VimResized	* :call s:win_dimensions()
-
-" delete tags file
-autocmd VimLeave	* :exec "silent !rm -f /tmp/" . getpid() . ".tags"
 "}}}
 "}}}
 
@@ -98,8 +93,6 @@ autocmd VimLeave	* :exec "silent !rm -f /tmp/" . getpid() . ".tags"
 " set certain window dimensions, depending on vim size
 function s:win_dimensions()
 	let g:scratchWinWidth = (&columns/5 <= 20) ? 20 : &columns/5
-	let g:gtd_sym_window_width = (&columns/5 <= 20) ? 20 : &columns/5
-	let g:gtd_sym_preview_width = (&columns/3 <= 20) ? 20 : &columns/3
 	let g:makeWinHeight = (&window/5) <= 7 ? 7 : &window/5
 endfunction
 
@@ -116,11 +109,6 @@ function s:syn_stack()
 	echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 	echo "hi: " . synIDattr(synID(line("."),col("."),1),"name") . ', trans: ' . synIDattr(synID(line("."),col("."),0),"name") . ", lo: " . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name")
 endfunc
-
-" generate tags file /tmp/<dirname>.tags
-function s:gentags()
-	call system("ctags --append --tag-relative=yes -R -f /tmp/" . getpid() . ".tags .")
-endfunction
 
 " enable spell checking and move between bad words
 function s:spell_ctrl(dir)
@@ -309,7 +297,6 @@ highlight	SignColumn		ctermbg=0
 highlight	VertSplit		ctermbg=0 ctermfg=236 cterm=None
 highlight	Folded			ctermfg=242 ctermbg=234
 highlight	ExtraWhitespace	ctermbg=236
-highlight	clang_arg		ctermbg=33
 
 " match extra whitespaces
 autocmd	FileType c,cpp,asm match ExtraWhitespace	"\( \+$\)\|\(^\zs \+\ze[^ \*]\+\)\|\([^\t]\+\zs\t\+\ze$\)"
@@ -326,112 +313,33 @@ let lex_uses_cpp = 1
 """""""""""""""""
 "{{{
 """"
-"" clang_complete
+"" be-complete
 """"
 "{{{
-"let g:clang_complete_loaded = 0
-let g:clang_library_path = "/usr/lib/llvm-6.0/lib"
-let g:clang_use_library = 1
+let g:becomplete_kindsym_undef = "⁇"
+let g:becomplete_kindsym_type = "t"
+let g:becomplete_kindsym_namespace = "::"
+let g:becomplete_kindsym_function = "Σ"
+let g:becomplete_kindsym_specialfunction = "~"
+let g:becomplete_kindsym_member = "."
+let g:becomplete_kindsym_variable = "v"
+let g:becomplete_kindsym_macro = "d"
+let g:becomplete_kindsym_file = "⛁"
+let g:becomplete_kindsym_text = "㈹"
 
-let g:clang_complete_auto = 1
-let g:clang_complete_fallback = 1
-let g:clang_auto_select = 0
-let g:clang_complete_macros = 1
-let g:clang_complete_copen = 0
-let g:clang_sort_algo = "alpha"
+let g:becomplete_type_declaration = "dcl"
+let g:becomplete_type_definition = "def"
 
-let g:clang_snippets = 1
-let g:clang_snippets_engine = 'clang_complete'
-let g:clang_conceal_snippets = 1
-"let g:clang_trailing_placeholder = 1
-"let g:clang_complete_optional_args_in_snippets = 0
+highlight becomplete_arg ctermbg=33
 
-let g:clang_hl_errors = 0
-let g:clang_periodic_quickfix = 0
-"let g:clang_complete_auto
-"}}}
-
-"""
-"" tagcomplete
-""""
-"{{{
-let g:tagcomplete_map_complete = '<tab>'
-let g:tagcomplete_map_next = '<c-n>'
-let g:tagcomplete_map_prev = '<c-p>'
-let g:tagcomplete_map_select = '<cr>'
-
-highlight tagcomplete_arg ctermbg=33
-
-let g:tagcomplete_ignore_filetype = { 
-	\ "c" : 1,
-	\ "cpp" : 1,
-	\ "objc" : 1,
-	\ "objcpp" : 1,
-\ }
-"}}}
-
-""""
-"" gtd
-""""
-"{{{
-" symbol window config
-let g:gtd_sym_window_show_signature	= 1
-let g:gtd_sym_window_foldopen = 1
-
-" symbol menu config
-let g:gtd_sym_menu = "» "
-
-" highlighting
-highlight gtd_select	ctermfg=255 ctermbg=31
-highlight gtd_filename	ctermfg=255 ctermbg=244
-highlight gtd_kind		ctermfg=27
-highlight gtd_comment	ctermfg=27
-
-" mappings
-call util#map#ni('<f9>', ':GtdSymWindowToggle<cr>', '')
-
-let g:gtd_map_def_split			= "fs"
-let g:gtd_map_def_tab			= "ft"
-let g:gtd_map_decl_split		= "ps"
-let g:gtd_map_decl_tab			= "pt"
-
-let g:gtd_map_def_split_glob	= "gfs"
-let g:gtd_map_def_tab_glob		= "gft"
-let g:gtd_map_decl_split_glob	= "gps"
-let g:gtd_map_decl_tab_glob		= "gpt"
-
-let g:gtd_map_head_list			= "hl"
-let g:gtd_map_head_focus		= "hf"
-
-let g:gtd_map_opt_menu			= "m"
-let g:gtd_map_sym_menu_all		= "ls"
-let g:gtd_map_sym_menu_func		= "lf"
-
-let g:gtd_map_quit				= "q"
-let g:gtd_map_expand			= "e"
-let g:gtd_map_select			= "<cr>"
-let g:gtd_map_update_win		= "u"
-let g:gtd_map_update_sym		= "U"
-
-let g:gtd_sym_window_close_on_select = 1
-
-" kinds of symbols to display in gtd window
-let g:gtd_sym_window_kinds_c		= ['c', 'd', 'f', 'g', 's', 't', 'u', 'v', 'x']
-let g:gtd_sym_window_kinds_asm		= ['d', 'l', 'm', 't']
-let g:gtd_sym_window_kinds_vim		= ['a', 'c', 'f', 'm', 'v']
-let g:gtd_sym_window_kinds_sh		= ['f']
-let g:gtd_sym_window_kinds_make		= ['m']
-let g:gtd_sym_window_kinds_python	= ['c', 'f', 'm', 'v', 'i']
-let g:gtd_sym_window_kinds_java		= ['c', 'e', 'f', 'g', 'i', 'l', 'm', 'p']
-
-" kinds of symbols to keep in symbol list
-let g:gtd_sym_list_kinds_c			= ['d', 'f', 'g', 's', 't', 'u']
-let g:gtd_sym_list_kinds_asm		= ['d', 'l', 'm', 't']
-let g:gtd_sym_list_kinds_vim		= ['a', 'c', 'f', 'm', 'v']
-let g:gtd_sym_list_kinds_sh			= ['f']
-let g:gtd_sym_list_kinds_make		= ['m']
-let g:gtd_sym_list_kinds_python		= ['c', 'f', 'm', 'v', 'i']
-let g:gtd_sym_list_kinds_java		= ['c', 'e', 'f', 'g', 'i', 'l', 'm', 'p']
+let g:becomplete_language_servers = [
+\	{
+\		"command": [ "clangd-14" ],
+\		"filetypes": [ "c", "cpp" ],
+\		"trigger": [ ".", "->", "::" ],
+\		"timeout-ms": "1000"
+\	},
+\ ]
 "}}}
 
 """"
@@ -588,10 +496,12 @@ let g:airline#extensions#tabline#formatter#cutomst#unnamed = g:airline_symbol_un
 
 """"
 "" snippet
-
+""""
+"{{{
 " XXX: file-type specific snippes are listed in ~/.vim/ftplugin/<filetype>
 
 let g:snippet_base = "~/.vim/snippets"
+"}}}
 "}}}
 
 """"""""""""
@@ -752,11 +662,4 @@ call s:cabbrev("Q", "q")
 
 " hex editor
 call s:cabbrev("hex", "%!xxd")
-"}}}
-
-""""""""""""
-" commands "
-""""""""""""
-"{{{
-command Gentags call s:gentags()
 "}}}
