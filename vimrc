@@ -340,6 +340,15 @@ let g:becomplete_language_servers = [
 \		"timeout-ms": "1000"
 \	},
 \ ]
+
+let g:becomplete_ctags_languages = {
+\	"vim": { "recursive": 1 },
+\	"sh": { "recursive": 0 },
+\	"make": { "recursive": 0 },
+\	"python": { "recursive": 0 },
+\	"java": { "recursive": 1 },
+\	"php": { "recursive": 0 },
+\ }
 "}}}
 
 """"
