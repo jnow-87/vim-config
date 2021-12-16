@@ -316,6 +316,13 @@ let lex_uses_cpp = 1
 "" be-complete
 """"
 "{{{
+let g:becomplete_complete_fallback = "<c-n>"
+let g:becomplete_complete_fallback_on_empty = 1
+
+let g:becomplete_goto_menu_always = 1
+let g:becomplete_goto_default = "tab"
+let g:becomplete_goto_preview_width = max([ &columns / 5, 40 ])
+
 let g:becomplete_kindsym_undef = "⁇"
 let g:becomplete_kindsym_type = "t"
 let g:becomplete_kindsym_namespace = "::"
@@ -325,7 +332,7 @@ let g:becomplete_kindsym_member = "."
 let g:becomplete_kindsym_variable = "v"
 let g:becomplete_kindsym_macro = "d"
 let g:becomplete_kindsym_file = "⛁"
-let g:becomplete_kindsym_text = "㈹"
+let g:becomplete_kindsym_text = "፸"
 
 let g:becomplete_type_declaration = "dcl"
 let g:becomplete_type_definition = "def"
@@ -334,7 +341,7 @@ highlight becomplete_arg ctermbg=33
 
 let g:becomplete_language_servers = [
 \	{
-\		"command": [ "clangd-14" ],
+\		"command": [ "clangd-14.custom" ],
 \		"filetypes": [ "c", "cpp" ],
 \		"trigger": [ ".", "->", "::" ],
 \		"timeout-ms": "1000"
