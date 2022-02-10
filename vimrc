@@ -346,6 +346,12 @@ let g:becomplete_language_servers = [
 \		"trigger": [ ".", "->", "::" ],
 \		"timeout-ms": "1000"
 \	},
+\	{
+\		"command": [ "vim-language-server", "--stdio" ],
+\		"filetypes": [ "vim" ],
+\		"trigger": [],
+\		"timeout-ms": "1000"
+\	},
 \ ]
 
 let g:becomplete_ctags_languages = {
