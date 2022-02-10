@@ -280,8 +280,8 @@ highlight	Error			ctermfg=255 ctermbg=88
 highlight	ErrorMsg		ctermfg=255 ctermbg=88
 highlight	Comment			ctermfg=27
 highlight	LineNr			ctermfg=88
-highlight	Search			ctermfg=0 ctermbg=1
-highlight	Pmenu			ctermfg=255 ctermbg=24
+highlight	Search			ctermfg=0 ctermbg=29
+highlight	Pmenu			ctermfg=255 ctermbg=23
 highlight	PmenuSel		ctermfg=255 ctermbg=236
 highlight	SpellBad		ctermfg=7 ctermbg=88
 highlight	SpellCap		ctermfg=7 ctermbg=21
@@ -409,7 +409,7 @@ call util#map#ni('<c-w>', ':MakeCycle w n<cr>', '')
 call util#map#ni('<c-a-w>', ':MakeCycle w p<cr>', '')
 
 highlight	make_header		ctermfg=27
-highlight	make_select		ctermfg=255 ctermbg=24
+highlight	make_select		ctermfg=255 ctermbg=23
 "}}}
 
 """"
@@ -463,7 +463,7 @@ let g:fold_map_close_all = 'fc'
 "{{{
 set laststatus=2
 
-let g:airline_theme = "darkpapercolor"
+let g:airline_theme = "papercolorgreen"
 let g:airline_powerline_fonts = 1
 let g:airline_mode_map = {
 	\ '__' : '-',
