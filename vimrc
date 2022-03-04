@@ -524,6 +524,40 @@ let g:airline#extensions#tabline#formatter#cutomst#unnamed = g:airline_symbol_un
 
 let g:snippet_base = "~/.vim/snippets"
 "}}}
+
+""""
+"" netrw
+""""
+"{{{
+let g:netrw_banner = 0
+let g:netrw_menu = 0
+let g:netrw_preview = 1
+let g:netrw_usetab = 0
+let g:netrw_dirhistmax = 0
+let g:netrw_home = "/tmp"
+let g:netrw_mousemaps = 0
+
+let g:netrw_liststyle = 3
+let g:netrw_hide = 0
+let g:netrw_special_syntax = 0
+
+let g:netrw_browse_split = 4
+let g:netrw_winsize = 20
+let g:netrw_alto = 0
+let g:netrw_altv = 0
+
+let g:netrw_sort_options = "i"
+let g:netrw_sort_by = "name"
+let g:netrw_sort_direction = "normal"
+
+call util#map#ni('<f9>', ':Lexplore<cr>', '')
+
+highlight netrwSymLink		ctermfg=23
+highlight netrwDir			ctermfg=27
+highlight netrwClassify		ctermfg=29
+highlight netrwTreeBar		ctermfg=29
+highlight netrwLink			ctermfg=29
+"}}}
 "}}}
 
 """"""""""""
