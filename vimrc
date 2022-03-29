@@ -421,6 +421,18 @@ let g:gcovered_update = "cu"
 "}}}
 
 """"
+"" gitblame
+""""
+"{{{
+call util#map#n('bb', ':GitBlame<cr>', '')
+call util#map#n('bl', ':GitBlameLine<cr>', '')
+
+highlight blameHash		ctermfg=29
+highlight blameAuthor	ctermfg=90
+highlight blameTime		ctermfg=236
+"}}}
+
+""""
 "" scratch
 """"
 "{{{
