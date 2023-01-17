@@ -302,7 +302,7 @@ highlight	ExtraWhitespace	ctermbg=236
 autocmd	FileType c,cpp,asm match ExtraWhitespace	"\( \+$\)\|\(^\zs \+\ze[^ \*]\+\)\|\([^\t]\+\zs\t\+\ze$\)"
 
 " config
-let g:syntax_c_fold_comment = 0
+let c_fold_enabled = 1
 let sh_fold_enabled = 1
 let yacc_uses_cpp = 1
 let lex_uses_cpp = 1
