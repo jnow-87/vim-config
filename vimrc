@@ -567,6 +567,12 @@ let g:netrw_sort_options = "i"
 let g:netrw_sort_by = "name"
 let g:netrw_sort_direction = "normal"
 
+" When opening a file from netrw if it is the only window in the
+" current tab, the file is opened in a window with the size of
+" g:netrw_winsize. To prevent this and instead keep netrw to its
+" size, the following autocmd is needed.
+autocmd WinLeave NetrwTreeListing exec "vert resize " . &columns / 5
+
 call util#map#ni('<f9>', ':Lexplore<cr>', '')
 
 highlight netrwSymLink		ctermfg=23
