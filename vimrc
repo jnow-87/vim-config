@@ -379,9 +379,14 @@ let vimgdb_inferior_show = 0
 "" comment
 """"
 "{{{
-let g:comment_map_line = "cl"
-let g:comment_map_block = "cb"
-let g:comment_map_sexy = "cs"
+let g:comment_map = "cl"
+let g:comment_strings = {
+	\ "c": "//%s",
+	\ "cpp": "//%s",
+	\ "asm": "//%s",
+	\ "bc": "//%s",
+	\ "yacc": "//%s",
+\ }
 "}}}
 
 """"
