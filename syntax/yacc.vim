@@ -107,6 +107,6 @@ if !exists("did_yacc_syn_inits")
 	hi def link yaccLoc				mlblue
 endif
 
-set iskeyword+=-
+setlocal iskeyword+=-
 
 let b:current_syntax = "yacc"
