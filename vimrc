@@ -588,14 +588,23 @@ highlight netrwLink			ctermfg=29
 """"""""""""
 "{{{
 " fix shifted function keys f1 to f4 for xterm
-" 	keycodes can be obtained through "$cat" in terminal
+" 	keycodes can be obtained through "$cat"
 exec "set <s-f1>=\e[1;2P"
 exec "set <s-f2>=\e[1;2Q"
 exec "set <s-f3>=\e[1;2R"
 exec "set <s-f4>=\e[1;2S"
 
-" map <c-backspace> to <f13> the given keycode is set within ~/.Xresources
-exec "set <f13>=\e[25;6~"
+" map
+"	<f13> (<c-backspace>)
+"	<f16> (<ctrl-return>)
+"	<f17> (<ctrl-alt-return>)
+"
+" the mappings are defined in the xkb keyboard layout
+" the gives keycodes can be obtained through "$cat"
+exec "set <f13>=\e[25~"
+exec "set <f16>=\e[29~"
+exec "set <f17>=\e[31~"
+
 
 """"
 "" spell checking and highlighting
@@ -688,6 +697,8 @@ call util#map#ni('<c-s>', search_map, '')
 	" next/prev seatch result
 call util#map#ni('<a-s>', '/<cr>', '')
 call util#map#ni('<a-s-s>', '?<cr>', '')
+call util#map#ni('<f16>', '/<cr>', '')
+call util#map#ni('<f17>', '?<cr>', '')
 
 if !&diff
 	call util#map#nv('<cr>', '/<cr>', '')
