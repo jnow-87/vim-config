@@ -52,7 +52,7 @@ syntax region	cString				start=+L\="+ skip=+\\\\\|\\"+ end=+"+ contains=@Spell
 
 " comments
 syntax region	cComment			start="//" skip="\\$" end="$" keepend contains=cTodo,@Spell
-syntax match	cCommentHeading		" \(macros\|types\|prototypes\|local\/static prototypes\|\(external\|global\|static\) variables\|\(global\|local\) functions\) "
+syntax match	cCommentHeading		" \(macros\|\(incomplete \)\?types\|prototypes\|local\/static prototypes\|\(external\|global\|static\) variables\|\(global\|local\) functions\) "
 syntax region	cComment			matchgroup=cComment start="/\*" end="\*/" contains=cTodo,@Spell,cCommentHeading
 
 " labels
