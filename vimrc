@@ -287,6 +287,7 @@ highlight	SpellBad		ctermfg=7 ctermbg=88
 highlight	SpellCap		ctermfg=7 ctermbg=21
 highlight	SpellLocal		ctermfg=7 ctermbg=57
 highlight	Visual			ctermfg=7 ctermbg=237
+highlight	Directory		ctermfg=26
 highlight	DiffAdd			ctermbg=28
 highlight	DiffChange		ctermbg=33
 highlight	DiffDelete		ctermbg=88
