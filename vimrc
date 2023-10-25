@@ -702,8 +702,8 @@ call util#map#ni('<f16>', '/<cr>', '')
 call util#map#ni('<f17>', '?<cr>', '')
 
 if !&diff
-	call util#map#nv('<cr>', '/<cr>', '')
-	call util#map#nv('<backspace>', '?<cr>', '')
+	call util#map#nv('<cr>', '/<cr>zz', '')
+	call util#map#nv('<backspace>', '?<cr>zz', '')
 endif
 
 " undo/redo
