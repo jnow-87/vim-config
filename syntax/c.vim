@@ -36,7 +36,6 @@ syntax cluster	cAll				contains=cKeyword,cBlock,cString,cComment,cUserLabel,asmB
 " keywords
 syntax keyword	cKeyword			static register auto extern const inline restrict volatile __volatile__
 syntax keyword	cKeyword			goto goto_errno break return return_errno continue case default if else switch while for do
-syntax keyword	cKeyword			asm __asm__ contained
 syntax keyword	cKeyword			sizeof typeof attribute __attribute__ 
 syntax keyword	cKeyword			true false 
 syntax keyword	cKeyword			struct union enum typedef
@@ -71,7 +70,7 @@ syntax region	cNonePreProcBlock	matchgroup=cPreProc start="^\s*\(%:\|#\)\s*\(if\
 syntax region	cPreProcIf0			start="^\s*\(%:\|#\)\s*if\s*0" end="^\s*\(%:\|#\)\s*\(endif\|else\|elif\)" contains=None fold
 
 " inline assembly
-syntax region	asmBlock			start="asm\s*[\(volatile\|goto\)]*\s*" end=")" contains=cKeyword,cComment,cPreProcBlock,asmTemplate,asmArgs transparent
+syntax region	asmBlock			matchgroup=cKeyword start="\(asm\|__asm__\)" matchgroup=None end=")" contains=cKeyword,cComment,cPreProcBlock,asmTemplate,asmArgs
 syntax region	asmTemplate			start='"' end='"' skip='\\"' contained contains=asmArgRef,@asmCode
 syntax region	asmArgs				start="\s*:\s*" end=");"me=e-2 contained contains=asmArgRefName,asmArgString,asmArgValue,cComment transparent
 syntax match	asmArgRef			"%\d*" contained
