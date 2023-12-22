@@ -35,7 +35,7 @@ set ai
 set noexpandtab
 set tabstop=4
 set shiftwidth=4
-set backspace=indent,eol,start
+set backspace=indent,eol,nostop
 set complete=.,w,b,u,t,i
 "set complete+=kspell
 set completeopt=menuone,longest,noselect
