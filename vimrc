@@ -600,8 +600,9 @@ exec "set <s-f4>=\e[1;2S"
 "	<f16> (<ctrl-return>)
 "	<f17> (<ctrl-alt-return>)
 "
-" the mappings are defined in the xkb keyboard layout
-" the gives keycodes can be obtained through "$cat"
+" the mappings are defined in the xkb keyboard layout, except the mapping for
+" <f13>, which is defined in ~/.Xresources
+" the given keycodes can be obtained through "$cat"
 exec "set <f13>=\e[25~"
 exec "set <f16>=\e[29~"
 exec "set <f17>=\e[31~"
