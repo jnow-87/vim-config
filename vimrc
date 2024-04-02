@@ -733,6 +733,10 @@ call util#map#ni('<c-a-h>', '<c-w><', '')
 call util#map#ni('<c-a-l>', '<c-w>>', '')
 call util#map#ni('<c-a-j>', '<c-w>+', '')
 call util#map#ni('<c-a-k>', '<c-w>-', '')
+call util#map#n('w=', '<c-w>=', '')
+call util#map#ni('<c-w>=', '<c-w>=', '')
+call util#map#n('w<cr>', ':call util#window#expand()<cr>', '')
+call util#map#ni('<c-w><cr>', ':call util#window#expand()<cr>', '')
 
 " open/close tab
 call util#map#n('o', ':tabnew ', 'nosilent')
