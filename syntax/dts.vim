@@ -25,7 +25,7 @@ syn match dts_device "[0-9a-zA-Z_-]\+\ze\s*=\s*{" nextgroup=dts_device_block
 syn region dts_device_block start="\s*=\s*{" end="}" contains=dts_comment,@dts_preproc,dts_dev_key,dts_string,dts_device fold
 
 " section and device content
-syn keyword dts_arch_key addr-width reg-width core-mask num-ints num-vints timer-cycle-time-us timer-int
+syn keyword dts_arch_key addr-width reg-width ncores num-ints num-vints timer-int syscall-int ipi-int timer-cycle-time-us
 syn keyword dts_dev_key	reg baseaddr compatible size string contained
 syn keyword dts_dev_key int nextgroup=dts_width contained
 
