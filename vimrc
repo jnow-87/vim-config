@@ -647,6 +647,9 @@ call util#map#ni('<f12>', ':set list!<cr>', '')
 call util#map#i('<f13>', '<c-w>', 'noescape noinsert')
 cnoremap <f13>	<c-w>
 
+	" sort visual selection
+call util#map#v('s', ":sort<cr>", 'noescape')
+
 " movement
 	" goto line x
 call util#map#n('l', "':' . input(\"\") . '<cr>'", '<expr> nosilent')
