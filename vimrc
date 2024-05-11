@@ -382,10 +382,11 @@ let vimgdb_inferior_show = 0
 "{{{
 let g:comment_map = "cl"
 let g:comment_strings = {
-	\ "c": "//%s",
-	\ "cpp": "//%s",
 	\ "asm": "//%s",
 	\ "bc": "//%s",
+	\ "c": "//%s",
+	\ "cpp": "//%s",
+	\ "dts": "//%s",
 	\ "yacc": "//%s",
 \ }
 "}}}

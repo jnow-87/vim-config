@@ -69,3 +69,6 @@ hi def link dts_c_pp		PreProc
 hi def link dts_c_pp_if0	PreProc
 
 let b:current_syntax = "dts"
+
+setlocal foldmethod=syntax
+setlocal  commentstring=//%s
