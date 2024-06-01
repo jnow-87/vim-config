@@ -671,10 +671,10 @@ call util#map#n('tt', '<c-]>', '')
 call util#map#n('gtt', 'g<c-]>', '')
 call util#map#n('<a-t>', '<c-t>', '')
 
-	" goto next diff
+	" goto next diff, centering cursor
 if &diff
-	call util#map#n('<cr>', ']c', '')
-	call util#map#n('<backspace>', '[c', '')
+	call util#map#n('n', ']czz', '')
+	call util#map#n('N', '[czz', '')
 endif
 
 " text selection
@@ -700,16 +700,17 @@ let search_map = ':set hls<cr>:let @/ = ''\<'' . expand(''<cword>'') . ''\>''<cr
 call util#map#n('s', search_map, '')
 call util#map#ni('<c-s>', search_map, '')
 
-	" next/prev seatch result
+	" next/prev search result
 call util#map#ni('<a-s>', '/<cr>', '')
 call util#map#ni('<a-s-s>', '?<cr>', '')
 call util#map#ni('<f16>', '/<cr>', '')
 call util#map#ni('<f17>', '?<cr>', '')
+call util#map#nv('<cr>', '/<cr>', '')
+call util#map#nv('<backspace>', '?<cr>', '')
 
-if !&diff
-	call util#map#nv('<cr>', '/<cr>zz', '')
-	call util#map#nv('<backspace>', '?<cr>zz', '')
-endif
+	" next/prev search result, centering cursor
+call util#map#nv('<s-cr>', '/<cr>zz', '')
+call util#map#nv('<s-backspace>', '?<cr>zz', '')
 
 " undo/redo
 call util#map#n('u', ':undo<cr>', '')
