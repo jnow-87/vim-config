@@ -46,7 +46,7 @@ syn region dts_comment start="/\*" end="\*/"
 " preprocessor
 syntax match	dts_c_pp			"^\s*\(%:\|#\)\s*include\s*\ze[<\"].*[>\"]" nextgroup=dts_header
 syntax region	dts_c_pp			start="^\s*\(%:\|#\)\s*\|undef\>"	skip="\\$" end="$" end="//"me=s-1 keepend contains=@dts_blocks fold
-syntax region	dts_c_pp			start="^\s*\(%:\|#\)\s*\(define\|pragma\|line\|warning\|warn\|error\)" skip="\\$" end="$" keepend
+syntax region	dts_c_pp			start="^\s*\(%:\|#\)\s*\(define\|pragma\|line\|warning\|warn\|error\)" skip="\\$" end="$" keepend fold
 syntax match	dts_c_pp			"^\s*\(%:\|#\)\s*\(if\s\+\|ifdef\s\+\|ifndef\s\+\)" contains=@dts_blocks
 syntax match	dts_c_pp			"^\s*\(%:\|#\)\s*\(else\|elif.\+\|endif\)" contains=@dts_blocks
 
