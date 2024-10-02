@@ -668,7 +668,6 @@ call util#map#ni('<c-a>', 'ggvG$', '')
 
 	" goto tag
 call util#map#n('tt', '<c-]>', '')
-call util#map#n('gtt', 'g<c-]>', '')
 call util#map#n('<a-t>', '<c-t>', '')
 
 	" goto next diff, centering cursor
