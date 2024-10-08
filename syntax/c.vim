@@ -35,7 +35,7 @@ syntax cluster	cAll				contains=cKeyword,cBlock,cString,cComment,cUserLabel,asmB
 
 " keywords
 syntax keyword	cKeyword			static register auto extern const inline restrict volatile __volatile__
-syntax keyword	cKeyword			goto goto_errno break return return_errno continue case default if else switch while for do
+syntax keyword	cKeyword			goto goto_errno goto_err break return return_errno continue case default if else switch while for do
 syntax keyword	cKeyword			sizeof typeof attribute __attribute__ 
 syntax keyword	cKeyword			true false 
 syntax keyword	cKeyword			struct union enum typedef
