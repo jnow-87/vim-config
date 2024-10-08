@@ -12,13 +12,13 @@ syn cluster dts_preproc contains=dts_c_pp,dts_c_pp_block,dts_c_pp_if0
 
 " sections
 syn keyword dts_section arch nextgroup=dts_arch_block
-syn region dts_arch_block start="\s*=\s*{" end="}" contains=dts_comment,@dts_preproc,dts_arch_key,dts_device,dts_assert,dts_ref fold
+syn region dts_arch_block start="\s*=\s*{" end="}" contains=dts_comment,@dts_preproc,dts_arch_key,dts_device,dts_assert,dts_ref,becomplete_arg fold
 
 syn keyword dts_section memory nextgroup=dts_memory_block
-syn region dts_memory_block start="\s*=\s*{" end="}" contains=dts_comment,@dts_preproc,dts_device,dts_assert,dts_ref fold
+syn region dts_memory_block start="\s*=\s*{" end="}" contains=dts_comment,@dts_preproc,dts_device,dts_assert,dts_ref,becomplete_arg fold
 
 syn keyword dts_section devices nextgroup=dts_devices_block
-syn region dts_devices_block start="\s*=\s*{" end="}" contains=dts_comment,@dts_preproc,dts_device,dts_assert,dts_ref fold
+syn region dts_devices_block start="\s*=\s*{" end="}" contains=dts_comment,@dts_preproc,dts_device,dts_assert,dts_ref,becomplete_arg fold
 
 " asserts
 syn keyword dts_assert assert ASSERT contained
@@ -29,7 +29,7 @@ syn region dts_ref start="[0-9a-zA-Z_-]\+\."me=e-1 end="[ \t+=,;]"me=e-1 contain
 
 " device
 syn match dts_device "[0-9a-zA-Z_-]\+\ze\s*=\s*{" nextgroup=dts_device_block
-syn region dts_device_block start="\s*=\s*{" end="}" contains=dts_comment,@dts_preproc,dts_dev_key,dts_string,dts_device,dts_assert,dts_ref fold
+syn region dts_device_block start="\s*=\s*{" end="}" contains=dts_comment,@dts_preproc,dts_dev_key,dts_string,dts_device,dts_assert,dts_ref,becomplete_arg fold
 
 " section and device content
 syn keyword dts_arch_key addr-width reg-width ncores num-ints num-vints timer-int syscall-int ipi-int timer-cycle-time-us

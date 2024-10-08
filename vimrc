@@ -353,6 +353,12 @@ let g:becomplete_language_servers = [
 \		"trigger": [],
 \		"timeout-ms": "1000"
 \	},
+\	{
+\		"command": [ "dtsls" ],
+\		"filetypes": [ "dts" ],
+\		"trigger": [],
+\		"timeout-ms": "1000"
+\	},
 \ ]
 
 let g:becomplete_ctags_languages = {
