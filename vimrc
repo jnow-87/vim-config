@@ -404,13 +404,13 @@ call util#map#ni('<f5>', ':Make<cr>', '')
 call util#map#ni('<a-f5>', ':MakeToggle<cr>', '')
 
 " cycle through errors
-call util#map#n('e', ':MakeCycle e n<cr>', '')
+call util#map#n('ee', ':MakeCycle e n<cr>', '')
 call util#map#n('<a-e>', ':MakeCycle e p<cr>', '')
 call util#map#ni('<c-e>', ':MakeCycle e n<cr>', '')
 call util#map#ni('<c-a-e>', ':MakeCycle e p<cr>', '')
 
 " cycle through warnings
-call util#map#n('w', ':MakeCycle w n<cr>', '')
+call util#map#n('ww', ':MakeCycle w n<cr>', '')
 call util#map#n('<a-w>', ':MakeCycle w p<cr>', '')
 call util#map#ni('<c-w>', ':MakeCycle w n<cr>', '')
 call util#map#ni('<c-a-w>', ':MakeCycle w p<cr>', '')
