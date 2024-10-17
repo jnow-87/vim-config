@@ -12,6 +12,7 @@ let b:current_syntax = "dts"
 " clusters
 syntax cluster	dts_blocks			contains=dts_section,dts_device,dts_comment,@dts_preproc
 syntax cluster	dts_preproc			contains=dts_pp,dts_pp_block,dts_pp_if0
+syntax cluster	dts_pp_contained	contains=dts_comment,dts_pp_dev_key,dts_pp_device,becomplete_arg
 
 " sections
 syntax keyword	dts_section			arch nextgroup=dts_arch_block
@@ -35,25 +36,32 @@ syntax match	dts_device			"[0-9a-zA-Z_-]\+\ze\s*=\s*{" nextgroup=dts_device_bloc
 syntax region	dts_device_block	start="\s*=\s*{" end="}" contains=dts_comment,@dts_preproc,dts_dev_key,dts_string,dts_device,dts_assert,dts_ref,becomplete_arg fold
 
 " section and device content
+let s:dev_keywords = "reg baseaddr compatible size string"
+let s:dev_width = '\s*<[0-9]\+>'
+
+syntax match	dts_string			"\".*\"" contained
 syntax keyword	dts_arch_key		addr-width reg-width ncores num-ints num-vints timer-int syscall-int ipi-int timer-cycle-time-us
-syntax keyword	dts_dev_key			reg baseaddr compatible size string contained
 syntax keyword	dts_dev_key			int nextgroup=dts_width contained
 
-syntax match	dts_width			"\s*<[0-9]\+>" contained
-syntax match	dts_string			"\".*\"" contained
+exec "syntax keyword dts_dev_key " . s:dev_keywords . " contained"
+exec "syntax match dts_width \"" . s:dev_width . "\" contained"
 
 " comments
 syntax region	dts_comment			start="//" skip="\\$" end="$"
 syntax region	dts_comment			start="/\*" end="\*/"
 
 " preprocessor
+syntax match	dts_header			"[\"<].*[\">]" contained
 syntax match	dts_pp				"^\s*\(%:\|#\)\s*include\s*\ze[<\"].*[>\"]" nextgroup=dts_header
-syntax region	dts_pp				start="^\s*\(%:\|#\)\s*\|undef\>"	skip="\\$" end="$" end="//"me=s-1 keepend contains=@dts_blocks fold
-syntax region	dts_pp				start="^\s*\(%:\|#\)\s*\(define\|pragma\|line\|warning\|warn\|error\)" skip="\\$" end="$" keepend fold
+syntax region	dts_pp				start="^\s*\(%:\|#\)\s*\|undef\>"	skip="\\$" end="$" end="//"me=s-1 keepend contains=@dts_blocks fold contains=@dts_pp_contained
+syntax region	dts_pp				start="^\s*\(%:\|#\)\s*\(define\|pragma\|line\|warning\|warn\|error\)" skip="\\$" end="$" keepend fold contains=@dts_pp_contained
 syntax match	dts_pp				"^\s*\(%:\|#\)\s*\(if\s\+\|ifdef\s\+\|ifndef\s\+\)" contains=@dts_blocks
 syntax match	dts_pp				"^\s*\(%:\|#\)\s*\(else\|elif.\+\|endif\)" contains=@dts_blocks
+syntax keyword	dts_pp_dev_key		int nextgroup=dts_pp_width contained
+syntax match	dts_pp_device		"[0-9a-zA-Z_-]\+\(\s*##\s*[0-9a-zA-Z_-]\+\)*\ze\s*=\s*{"
 
-syntax match	dts_header			"[\"<].*[\">]" contained
+exec "syntax keyword dts_pp_dev_key " . s:dev_keywords . " contained"
+exec "syntax match dts_pp_width \"" . s:dev_width . "\" contained"
 
 " #if | #ifdef | #ifndef macro blocks with first line not ending on '_H'
 syntax region	dts_pp_block		matchgroup=dts_pp start="^\s*\(%:\|#\)\s*\(if\|ifdef\|ifndef\)\s\+[ \ta-zA-Z0-9!<>|&=_()]\+\([^_]H\|[^H]\)$" matchgroup=dts_pp end="^\s*\(%:\|#\)\s*endif" transparent contains=@dts_blocks fold
@@ -72,3 +80,6 @@ hi def link dts_string		white
 hi def link dts_comment		mgreen
 hi def link dts_pp			PreProc
 hi def link dts_pp_if0		PreProc
+hi def link dts_pp_dev_key	mdblue
+hi def link dts_pp_width	mdlblue
+hi def link dts_pp_device	mdlblue
