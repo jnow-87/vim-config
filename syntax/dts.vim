@@ -11,7 +11,7 @@ let b:current_syntax = "dts"
 
 " clusters
 syntax cluster	dts_blocks			contains=dts_section,dts_device,dts_comment,@dts_preproc
-syntax cluster	dts_preproc			contains=dts_pp,dts_pp_block,dts_pp_if0
+syntax cluster	dts_preproc			contains=dts_pp,dts_pp_block,dts_pp_if0,dts_pp_ref
 syntax cluster	dts_pp_contained	contains=dts_comment,dts_pp_dev_key,dts_pp_device,becomplete_arg
 
 " sections
@@ -33,7 +33,7 @@ syntax region	dts_ref				start="[0-9a-zA-Z_-]\+\."me=e-1 end="[ \t+=,;]"me=e-1 c
 
 " device
 syntax match	dts_device			"[0-9a-zA-Z_-]\+\ze\s*=\s*{" nextgroup=dts_device_block
-syntax region	dts_device_block	start="\s*=\s*{" end="}" contains=dts_comment,@dts_preproc,dts_dev_key,dts_string,dts_device,dts_assert,dts_ref,becomplete_arg fold
+syntax region	dts_device_block	start="\s*=\s*{" end="}" contains=dts_comment,@dts_preproc,dts_dev_key,dts_string,dts_device,dts_assert,dts_ref,dts_pp_ref,becomplete_arg fold
 
 " section and device content
 let s:dev_keywords = "reg baseaddr compatible size string"
@@ -59,6 +59,7 @@ syntax match	dts_pp				"^\s*\(%:\|#\)\s*\(if\s\+\|ifdef\s\+\|ifndef\s\+\)" conta
 syntax match	dts_pp				"^\s*\(%:\|#\)\s*\(else\|elif.\+\|endif\)" contains=@dts_blocks
 syntax keyword	dts_pp_dev_key		int nextgroup=dts_pp_width contained
 syntax match	dts_pp_device		"[0-9a-zA-Z_-]\+\(\s*##\s*[0-9a-zA-Z_-]\+\)*\ze\s*=\s*{"
+syntax match	dts_pp_ref			"[0-9a-z_-]\+\ze\s*("
 
 exec "syntax keyword dts_pp_dev_key " . s:dev_keywords . " contained"
 exec "syntax match dts_pp_width \"" . s:dev_width . "\" contained"
@@ -83,3 +84,4 @@ hi def link dts_pp_if0		PreProc
 hi def link dts_pp_dev_key	mdblue
 hi def link dts_pp_width	mdlblue
 hi def link dts_pp_device	mdlblue
+hi def link dts_pp_ref		mlblue
