@@ -177,29 +177,46 @@ function Foldtext()
 endfunction
 
 
-let s:nline_indicator = [ '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█' ]
-let s:nline_indicator_len = len(s:nline_indicator)
+let s:fileloc_syms = [ '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█' ]
+let s:fileloc_syms = [ '󰋙', '󰫃', '󰫄', '󰫅', '󰫆', '󰫇', '󰫈' ]
 
-" return a string indicating the position within the current file
-" string characters are taken from nline_indicator
-function Nline_indicator()
-	let s = ""
-	let i = 0
+let s:fileloc_nsyms = len(s:fileloc_syms)
+let s:fileloc_indicator_singlesym = "%{Fileloc_singlesym()}"
+let s:fileloc_indicator_multisym = "%-" . s:fileloc_nsyms . "{Fileloc_multisym()}"
+
+" return a string indicating the position within the current file, the strings
+" length depends on the cursor's location
+function Fileloc_multisym()
+	let l:s = ""
+	let l:i = 0
 
 	" determine number of indicator elements to display
-	let x = s:nline_indicator_len * line('.') / line('$') + 1
+	let l:x = s:fileloc_nsyms * line('.') / line('$') + 1
 	
-	if x > s:nline_indicator_len
-		let x = s:nline_indicator_len
+	if l:x > s:fileloc_nsyms
+		let l:x = s:fileloc_nsyms
 	endif
 
 	" copy required number of elements to string
-	while i < x
-		let s .= s:nline_indicator[i]
-		let i += 1
+	while l:i < l:x
+		let l:s .= s:fileloc_syms[l:i]
+		let l:i += 1
 	endwhile
 
-	return s
+	return l:s
+endfunction
+
+" return a single-character string indicating the position within the current file
+function Fileloc_singlesym()
+	" determine number of indicator elements to display
+	let l:x = s:fileloc_nsyms * line('.') / line('$') + 1
+	
+	if l:x > s:fileloc_nsyms
+		let l:x = s:fileloc_nsyms
+	endif
+
+	" copy required number of elements to string
+	return s:fileloc_syms[l:x - 1]
 endfunction
 
 " return string indicating the total number of search pattern matches
@@ -257,7 +274,7 @@ function! Search_index()
 	endif
 
 	" return string
-    return exact . '/' . total . '  '
+    return exact . '/' . total . ' ' . g:airline_right_alt_sep . ' '
 endfunction
 "}}}
 
@@ -492,36 +509,59 @@ set laststatus=2
 
 let g:airline_theme = "papercolorgreen"
 let g:airline_powerline_fonts = 1
+
 let g:airline_mode_map = {
-	\ '__' : '-',
-	\ 'n'  : 'norm',
-	\ 'i'  : 'ins',
-	\ 'R'  : 'repl',
-	\ 'c'  : 'C',
-	\ 'v'  : 'vis',
-	\ 'V'  : 'visl',
-	\ '' : 'visb',
-	\ 's'  : 'S',
-	\ 'S'  : 'S',
-	\ '' : 'S',
+	\ '__' : '⁇',
+	\ 'n'  : '',
+	\ 'i'  : '',
+	\ 'R'  : '',
+	\ 'c'  : '',
+	\ 'v'  : '󰩬',
+	\ 'V'  : '󰩬',
+	\ '' : '󰩬',
+	\ 's'  : '󰩬',
+	\ 'S'  : '󰩬',
+	\ '' : '󰩬',
 \ }
 
-let g:airline_symbol_crypt = "\u221e"
-let g:airline_symbol_ro = "\ue0a2"
-let g:airline_symbol_rw = "✎"
-let g:airline_symbol_modified = "⛁"
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+
+let g:airline_symbol_crypt = "󰯅"
+let g:airline_symbol_ro = ""
+let g:airline_symbol_rw = ""
+let g:airline_symbol_modified = ""
 let g:airline_symbol_truncat = "‥"
 let g:airline_symbol_unnamed = "⁇"
-
 let g:airline_symbols = {}
 let g:airline_symbols.modified = " " . g:airline_symbol_modified
 
-let g:airline_section_a = "%4{airline#parts#mode()}"
+let g:airline_filetype_symbols = {
+	\ "c": "",
+	\ "cpp": "",
+	\ "asm": "",
+	\ "sh": "",
+	\ "vim": "",
+	\ "plaintex": "",
+	\ "tex": "",
+	\ "text": "󰊄",
+	\ "python": "󰱵",
+\ }
+
+let g:airline_fileformat_symbols = {
+	\ "unix": "",
+	\ "dos": "󰨡",
+	\ "mac": "",
+\ }
+
+let g:airline_section_a = "%{airline#parts#mode()}"
 let g:airline_section_b = "%{(&readonly || !&modifiable ? g:airline_symbol_ro : g:airline_symbol_rw)}%{(exists('+key') && !empty(&key) ? '  ' . g:airline_symbol_crypt : '')}"
 let g:airline_section_c = "%<%f %{&modified ? g:airline_symbol_modified : ''}"
-let g:airline_section_x = "%{&filetype}"
-let g:airline_section_y = "%{&fileformat}%{(&fileencoding != '' ? '  ' . g:airline_right_alt_sep . ' ' : '')}%{&fileencoding}"
-let g:airline_section_z = "%{Search_index()}%7(%l,%v%) %-" . s:nline_indicator_len . "{Nline_indicator()}"
+let g:airline_section_x = "%{get(g:airline_filetype_symbols, &filetype, &filetype)}"
+let g:airline_section_y = "%{get(g:airline_fileformat_symbols, &fileformat, &fileformat)}%{(&fileencoding != '' ? '  ' . g:airline_right_alt_sep . ' ' : '')}%{&fileencoding}"
+let g:airline_section_z = "%{Search_index()}%(%l,%v%) " . s:fileloc_indicator_singlesym
 let g:airline_section_warning = ""
 
 let g:airline_extensions = ['tabline']
@@ -530,6 +570,7 @@ let g:airline#extensions#default#section_truncate_width = {
 	\ 'y' : 88,
 \ }
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#tabs_label = '󱃲'
 let g:airline#extensions#tabline#show_splits = 0
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#show_tabs = 1
