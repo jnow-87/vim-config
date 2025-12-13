@@ -803,7 +803,8 @@ call util#map#ni('<c-c>', ':q<cr>', '')
 "{{{
 " commands
 call s:cabbrev("make", "Make")
-call s:cabbrev("gfe", "Search -e build -e built -e recent -e .git")
+call s:cabbrev("se", "Search -e build -e built -e recent -e .git")
+call s:cabbrev("S", "s")
 
 " typos
 call s:cabbrev("W", "w")
