@@ -698,7 +698,7 @@ call util#map#i('<f13>', '<c-w>', 'noescape noinsert')
 cnoremap <f13>	<c-w>
 
 	" sort visual selection
-call util#map#v('s', ":sort<cr>", 'noescape')
+call util#map#v('s', ":sort<cr>", 'noescape', 1)
 
 " movement
 	" goto line x
