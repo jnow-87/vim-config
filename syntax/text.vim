@@ -1,7 +1,7 @@
-syn match heading "\s*\*\*\*.*"
+syn region heading matchgroup=None start="\s*\*\*\*\s*" end="$" concealends
 syn match comment "^#.*"
 syn match subheading "^\s*\[[^\]]*\]"
-syn match highlight "`[^`]*`"
+syn region highlight matchgroup=None start='`' end='`' concealends
 syn keyword todo TODO XXX contained
 
 syn cluster all contains=heading,comment,todo,subheading,highlight
